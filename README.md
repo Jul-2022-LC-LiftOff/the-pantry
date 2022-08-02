@@ -5,4 +5,5 @@ The Pantry Sanity Project: A comprehensive meal planner for indecisive people
 - TA: Dan Hart
 
 Team Member Jisha
+rechecking how to do
 
