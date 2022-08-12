@@ -20,9 +20,7 @@
 
     <div class="form-group">
         <label th:for="name">Ingredients</label>
-        <!--
-        <textarea class="form-control" name="ingredients" rows ="10"></textarea>
-        -->
+
         <textarea class="form-control" th:field="${recipe.ingredients}" rows ="10" />
         <span th:errors="${recipe.ingredients}" class="error"></span>
 
@@ -30,9 +28,7 @@
 
     <div class="form-group">
         <label th:for="name">Instructions</label>
-        <!--
-        <textarea class="form-control" name="instructions" rows ="10"></textarea>
-        -->
+
         <textarea class="form-control" th:field="${recipe.instructions}" rows ="10" />
         <span th:errors="${recipe.instructions}" class="error"></span>
 
@@ -40,13 +36,14 @@
 
     <div class="form-group">
         <label th:for="tags">Tags</label>
-        <!--
+
         <th:block th:each="tag : ${tags}">
             <input type="checkbox" name="tags" th:value="${tag.id}">
             <label th:text="${tag.name}"></label>
         </th:block>
-        -->
+
         <a th:href="@{'/tags/add'}">Add Tags</a>
+
     </div>
 
     <input type="submit" value="Add Recipe" />

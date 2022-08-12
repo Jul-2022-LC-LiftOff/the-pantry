@@ -1,9 +1,9 @@
 package com.liftoff.thepantry.data;
 
-import com.liftoff.thepantry.models.Recipe;
+import com.liftoff.thepantry.models.Tag;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
+public interface TagRepository extends CrudRepository<Tag, Integer> {
 }
