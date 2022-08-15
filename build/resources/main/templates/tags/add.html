@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container body-content">
-<h1>Add Tag</h1>
+<h2>Add Tag</h2>
 
 <nav th:replace="fragments :: page-header"></nav>
 
@@ -12,7 +12,7 @@
 
 <form method="post" style="max-width:600px;">
    <div class="form-group">
-      <label th:for="name">Tag Name</label>
+      <label th:for="name">Name</label>
       <input class="form-control" th:field="${tag.name}" />
       <span th:errors="${tag.name}" class="error"></span>
    </div>

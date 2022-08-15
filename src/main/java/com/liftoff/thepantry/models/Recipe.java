@@ -10,7 +10,7 @@ import java.util.List;
 public class Recipe extends AbstractEntity {
 
     @NotBlank
-    private String ingredients;
+    private String description;
 
     @NotBlank
     private String instructions;
@@ -18,24 +18,28 @@ public class Recipe extends AbstractEntity {
     @ManyToMany
     private List<Tag> tags = new ArrayList<>();
 
+    @ManyToMany
+    private List<Ingredient> ingredients = new ArrayList<>();
+
     public Recipe() {
     }
 
-    public Recipe(String ingredients, String instructions, List<Tag> tagsList) {
+    public Recipe(String description, String instructions, List<Tag> tagsList, List<Ingredient> ingredientList) {
         super();
-        this.ingredients = ingredients;
+        this.description = description;
         this.instructions = instructions;
         this.tags = tagsList;
+        this.ingredients = ingredientList;
     }
 
     // Getters and setters
 
-    public String getIngredients() {
-        return ingredients;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getInstructions() {
@@ -54,4 +58,11 @@ public class Recipe extends AbstractEntity {
         this.tags = tags;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }
