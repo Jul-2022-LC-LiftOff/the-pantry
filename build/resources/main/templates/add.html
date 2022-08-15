@@ -20,9 +20,7 @@
 
     <div class="form-group">
         <label th:for="name">Ingredients</label>
-        <!--
-        <textarea class="form-control" name="ingredients" rows ="10"></textarea>
-        -->
+
         <textarea class="form-control" th:field="${recipe.ingredients}" rows ="10" />
         <span th:errors="${recipe.ingredients}" class="error"></span>
 
@@ -30,9 +28,7 @@
 
     <div class="form-group">
         <label th:for="name">Instructions</label>
-        <!--
-        <textarea class="form-control" name="instructions" rows ="10"></textarea>
-        -->
+
         <textarea class="form-control" th:field="${recipe.instructions}" rows ="10" />
         <span th:errors="${recipe.instructions}" class="error"></span>
 
