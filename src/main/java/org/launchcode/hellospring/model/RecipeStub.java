@@ -2,14 +2,14 @@ package org.launchcode.hellospring.model;
 
 import java.util.Objects;
 
-public class Recipe {
+public class RecipeStub {
     private String recipeName;
     private int id;
     private String ingredients;
     private String recipeInstructions;
     private static int nextId = 1;
 
-    public Recipe(String recipeName, String ingredients) {
+    public RecipeStub(String recipeName, String ingredients) {
         this.recipeName=recipeName;
         this.ingredients=ingredients;
         this.id=nextId;
@@ -40,7 +40,7 @@ public class Recipe {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Recipe event = (Recipe) o;
+        RecipeStub event = (RecipeStub) o;
         return id == event.id;
     }
 

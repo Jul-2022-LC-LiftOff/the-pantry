@@ -1,20 +1,24 @@
-package org.launchcode.hellospring.controller;
+package com.liftoff.thepantry.controllers;
 
-import org.launchcode.hellospring.data.RecipeListData;
-import org.launchcode.hellospring.data.SearchCriteria;
-import org.launchcode.hellospring.model.Recipe;
+import com.liftoff.thepantry.data.RecipeData;
+import com.liftoff.thepantry.data.RecipeRepository;
+import com.liftoff.thepantry.models.Recipe;
+import com.liftoff.thepantry.data.SearchCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping()
 public class RecipeListController {
-//    HashMap<String,String> recipeHash=new HashMap<>();
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+    //    HashMap<String,String> recipeHash=new HashMap<>();
 
 
 //public String displayListOfRecipe(Model model){
@@ -29,13 +33,14 @@ public class RecipeListController {
 //        return "events/create";
 //    }
 
-    @GetMapping("recipielist")
-    public String processCreateEventForm(Model model) {
+    @GetMapping("list")
+    public String listRecipes(Model model) {
         SearchCriteria searchCriteria = null;
-        System.out.println("------------ In processCreateEvent ");
-        ArrayList searchResult = RecipeListData.getRecipes(searchCriteria);
+        Recipe recipe = new Recipe();
+        ArrayList searchResult = RecipeData.getRecipes(searchCriteria, recipeRepository.findAll());
          model.addAttribute("recipes",searchResult);
          System.out.println(" -- " + searchResult.toString());
-        return "/recipelist";
+        return "/list";
     }
+
 }

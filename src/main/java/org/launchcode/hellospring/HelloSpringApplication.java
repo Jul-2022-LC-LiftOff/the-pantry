@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HelloSpringApplication {
 
-	public static void main(String[] args) {
+	public static void main1(String[] args) {
 		SpringApplication.run(HelloSpringApplication.class, args);
 	}
 
