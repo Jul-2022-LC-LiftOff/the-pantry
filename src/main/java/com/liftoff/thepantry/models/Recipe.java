@@ -1,7 +1,9 @@
 package com.liftoff.thepantry.models;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ public class Recipe extends AbstractEntity {
     @ManyToMany
     private List<Tag> tags = new ArrayList<>();
 
-    @ManyToMany
+    @OneToMany
+    @JoinColumn(name = "recipe_id")
     private List<Ingredient> ingredients = new ArrayList<>();
 
     public Recipe() {

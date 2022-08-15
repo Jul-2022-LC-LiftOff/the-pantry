@@ -1,24 +1,51 @@
 package com.liftoff.thepantry.models;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Ingredient extends AbstractEntity {
 
-    @ManyToMany(mappedBy = "ingredients")
-    private List<Recipe> recipes = new ArrayList<>();
+    @ManyToOne
+    private Recipe recipe;
+
+    private String unit;
+
+    private String amount;
 
     public Ingredient() {
     }
 
-    public List<Recipe> getRecipes() {
-        return recipes;
+    public Ingredient(Recipe recipe, String unit, String amount) {
+        super();
+        this.recipe = recipe;
+        this.unit = unit;
+        this.amount = amount;
     }
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    // Getters and Setters
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

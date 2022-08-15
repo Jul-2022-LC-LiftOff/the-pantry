@@ -1,5 +1,6 @@
 package com.liftoff.thepantry.controllers;
 
+import com.liftoff.thepantry.data.IngredientRepository;
 import com.liftoff.thepantry.data.RecipeRepository;
 import com.liftoff.thepantry.data.TagRepository;
 import com.liftoff.thepantry.models.Recipe;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("recipes")
@@ -22,6 +24,9 @@ public class RecipeController {
 
     @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @GetMapping("")
     public String index(Model model) {
@@ -59,6 +64,20 @@ public class RecipeController {
         recipeRepository.save(newRecipe);
 
         return "redirect:";
+    }
+
+    @GetMapping("ingredients/{recipeId}")
+    public String addRecipeIngredient(Model model, @PathVariable int recipeId) {
+
+        Optional optRecipe = recipeRepository.findById(recipeId);
+        if (optRecipe.isPresent()) {
+            Recipe recipe = (Recipe) optRecipe.get();
+            model.addAttribute("recipe", recipe);
+            model.addAttribute("ingredients", ingredientRepository.findAll());
+            return "recipes/ingredients";
+        } else {
+            return "redirect:../";
+        }
     }
 
 }

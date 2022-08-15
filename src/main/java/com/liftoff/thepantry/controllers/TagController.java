@@ -3,6 +3,7 @@ package com.liftoff.thepantry.controllers;
 import com.liftoff.thepantry.data.TagRepository;
 import com.liftoff.thepantry.models.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,7 +21,7 @@ public class TagController {
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("title", "Tags");
-        model.addAttribute("tags", tagRepository.findAll());
+        model.addAttribute("tags", tagRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         return "tags/index";
     }
 
