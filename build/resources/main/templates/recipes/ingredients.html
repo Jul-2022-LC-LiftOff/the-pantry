@@ -12,7 +12,7 @@
 <h3>Add Ingredients</h3>
 <form method="post" style="max-width:600px;">
     <div class="form-group">
-        <input th:field="${ingredient.recipe_id}" value="${recipe.id}" />
+        <input th:field="${ingredient.recipe_id}" th:value="${recipe.id}" />
 
         <label th:for="amount">Amount</label>
         <input class="form-control" th:field="${ingredient.amount}" />

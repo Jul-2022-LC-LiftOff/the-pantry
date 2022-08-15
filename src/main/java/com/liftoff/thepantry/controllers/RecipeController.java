@@ -3,6 +3,7 @@ package com.liftoff.thepantry.controllers;
 import com.liftoff.thepantry.data.IngredientRepository;
 import com.liftoff.thepantry.data.RecipeRepository;
 import com.liftoff.thepantry.data.TagRepository;
+import com.liftoff.thepantry.models.Ingredient;
 import com.liftoff.thepantry.models.Recipe;
 import com.liftoff.thepantry.models.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,7 @@ public class RecipeController {
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
+            model.addAttribute(new Ingredient());
             model.addAttribute("ingredients", ingredientRepository.findAll());
             return "recipes/ingredients";
         } else {
