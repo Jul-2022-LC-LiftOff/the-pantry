@@ -10,13 +10,15 @@
 
 <div class="container body-content">
     <h2>Ingredients</h2>
+    <a class="btn btn-primary" th:href="@{'/ingredients/add'}" role="button">Add Ingredient</a>
+
+<p>
     <ul>
         <li th:each="ingredient : ${ingredients}">
             <a th:href="@{'#'}" th:text="${ingredient.name}"></a>
         </li>
     </ul>
-    <a th:href="@{'/ingredients/add'}">Add Ingredient</a>
-
+</p>
 </div>
 
 </body>

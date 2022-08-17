@@ -1,9 +1,6 @@
 package com.liftoff.thepantry.models;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +15,12 @@ public class Recipe extends AbstractEntity {
     private String instructions;
 
     @ManyToMany
+    @JoinTable(name = "recipe_tag", joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "recipe_id")
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
     public Recipe() {
     }
@@ -32,7 +30,6 @@ public class Recipe extends AbstractEntity {
         this.description = description;
         this.instructions = instructions;
         this.tags = tagsList;
-        this.ingredients = ingredientList;
     }
 
     // Getters and setters
@@ -61,11 +58,12 @@ public class Recipe extends AbstractEntity {
         this.tags = tags;
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public List<RecipeIngredient> getRecipeIngredients() {
+        return recipeIngredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
     }
+
 }

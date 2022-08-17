@@ -6,10 +6,6 @@
 
 <nav th:replace="fragments :: page-header"></nav>
 
-<li th:each="tag : ${tags}">
-   <a th:href="@{'#'}" th:text="${tag.name}"></a>
-</li>
-
 <form method="post" style="max-width:600px;">
    <div class="form-group">
       <label th:for="name">Name</label>
@@ -17,8 +13,16 @@
       <span th:errors="${tag.name}" class="error"></span>
    </div>
 
-   <input type="submit" value="Add Tag" />
+   <input class="btn btn-primary" type="submit" value="Add Tag" />
 </form>
+
+<p>
+   <ul>
+      <li th:each="tag : ${tags}">
+         <a th:href="@{'#'}" th:text="${tag.name}"></a>
+      </li>
+   </ul>
+</p>
 
 </body>
 </html>

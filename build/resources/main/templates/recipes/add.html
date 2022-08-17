@@ -40,12 +40,18 @@
             <label th:text="${tag.name}"></label>
         </th:block>
 
-        <a th:href="@{'/tags/add'}">Add Tags</a>
-
     </div>
 
-    <input type="submit" value="Add Recipe" />
+    <input class="btn btn-primary" type="submit" value="Add Recipe" />
 </form>
+
+<p>
+    <ul>
+        <li th:each="recipe : ${recipes}">
+            <a th:href="@{'#'}" th:text="${recipe.name}"></a>
+        </li>
+    </ul>
+</p>
 
 </body>
 </html>

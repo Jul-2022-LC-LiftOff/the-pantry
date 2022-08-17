@@ -1,11 +1,7 @@
 package com.liftoff.thepantry.controllers;
 
-import com.liftoff.thepantry.data.IngredientRepository;
-import com.liftoff.thepantry.data.RecipeRepository;
-import com.liftoff.thepantry.data.TagRepository;
-import com.liftoff.thepantry.models.Ingredient;
-import com.liftoff.thepantry.models.Recipe;
-import com.liftoff.thepantry.models.Tag;
+import com.liftoff.thepantry.data.*;
+import com.liftoff.thepantry.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +24,12 @@ public class RecipeController {
 
     @Autowired
     private IngredientRepository ingredientRepository;
+
+    @Autowired
+    private RecipeIngredientRepository recipeIngredientRepository;
+
+    @Autowired
+    private UnitRepository unitRepository;
 
     @GetMapping("")
     public String index(Model model) {
@@ -68,18 +70,49 @@ public class RecipeController {
     }
 
     @GetMapping("ingredients/{recipeId}")
-    public String addRecipeIngredient(Model model, @PathVariable int recipeId) {
+    public String displayRecipeIngredient(Model model, @PathVariable int recipeId) {
 
         Optional optRecipe = recipeRepository.findById(recipeId);
-        if (optRecipe.isPresent()) {
-            Recipe recipe = (Recipe) optRecipe.get();
-            model.addAttribute("recipe", recipe);
-            model.addAttribute(new Ingredient());
-            model.addAttribute("ingredients", ingredientRepository.findAll());
-            return "recipes/ingredients";
-        } else {
-            return "redirect:../";
+        Recipe recipe = (Recipe) optRecipe.get();
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
+        model.addAttribute("units", unitRepository.findAll());
+        model.addAttribute("ingredients", ingredientRepository.findAll());
+        model.addAttribute(new RecipeIngredient());
+        return "recipes/ingredients";
+    }
+
+    @PostMapping("ingredients/{recipeId}")
+    public String addRecipeIngredient(@ModelAttribute @Valid RecipeIngredient newRecipeIngredient,
+                                      Errors errors, Model model, @RequestParam String amount, @RequestParam int recipeId, @RequestParam int unitId, @RequestParam int ingredientId) {
+
+        if (errors.hasErrors()) {
+            return "redirect:" + recipeId;
         }
+
+        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+        if(optRecipe.isPresent()) {
+            Recipe recipe = optRecipe.get();
+            newRecipeIngredient.setRecipe(recipe);
+        }
+
+        Optional<Unit> optUnit = unitRepository.findById(unitId);
+        if(optUnit.isPresent()) {
+            Unit unit = optUnit.get();
+            newRecipeIngredient.setUnit(unit);
+        }
+
+        Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
+        if(optIngredient.isPresent()) {
+            Ingredient ingredient = optIngredient.get();
+            newRecipeIngredient.setIngredient(ingredient);
+        }
+
+        newRecipeIngredient.setAmount(amount);
+
+        recipeIngredientRepository.save(newRecipeIngredient);
+
+        return "redirect:" + recipeId;
     }
 
 }

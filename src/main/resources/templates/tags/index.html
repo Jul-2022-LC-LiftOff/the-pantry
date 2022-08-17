@@ -10,13 +10,14 @@
 
 <div class="container body-content">
     <h2>Tags</h2>
-    <ul>
-        <li th:each="tag : ${tags}">
-            <a th:href="@{'#'}" th:text="${tag.name}"></a>
-        </li>
-    </ul>
-    <a th:href="@{'/tags/add'}">Add Tag</a>
-
+    <a class="btn btn-primary" th:href="@{'/tags/add'}" role="button">Add Tag</a>
+    <p>
+        <ul>
+            <li th:each="tag : ${tags}">
+                <a th:href="@{'#'}" th:text="${tag.name}"></a>
+            </li>
+        </ul>
+    </p>
 </div>
 
 </body>

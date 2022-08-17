@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Ingredient extends AbstractEntity {
+public class Unit extends AbstractEntity {
 
     @OneToMany
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "unit_id")
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-    public Ingredient() {
+    public Unit() {
     }
 
     // Getters and Setters
