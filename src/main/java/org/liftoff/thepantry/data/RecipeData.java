@@ -1,12 +1,9 @@
-package com.liftoff.thepantry.data;
+package org.liftoff.thepantry.data;
 
-import com.liftoff.thepantry.models.Recipe;
+import org.liftoff.thepantry.models.Recipe;
 import org.launchcode.hellospring.model.RecipeStub;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RecipeData {
     //private static final Map<Integer, RecipeStub> events = new HashMap<>();

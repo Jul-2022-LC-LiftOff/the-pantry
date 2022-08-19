@@ -1,9 +1,9 @@
-package com.liftoff.thepantry.controllers;
+package org.liftoff.thepantry.controllers;
 
-import com.liftoff.thepantry.data.RecipeData;
-import com.liftoff.thepantry.data.RecipeRepository;
-import com.liftoff.thepantry.models.Recipe;
-import com.liftoff.thepantry.data.SearchCriteria;
+import org.liftoff.thepantry.data.RecipeData;
+import org.liftoff.thepantry.data.RecipeRepository;
+import org.liftoff.thepantry.models.Recipe;
+import org.liftoff.thepantry.data.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
