@@ -1,4 +1,4 @@
-package com.liftoff.thepantry;
+package org.liftoff.thepantry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
