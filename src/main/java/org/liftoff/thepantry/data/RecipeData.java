@@ -1,7 +1,6 @@
 package org.liftoff.thepantry.data;
 
 import org.liftoff.thepantry.models.Recipe;
-import org.launchcode.hellospring.model.RecipeStub;
 
 import java.util.ArrayList;
 
