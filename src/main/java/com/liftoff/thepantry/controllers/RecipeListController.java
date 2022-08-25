@@ -39,7 +39,7 @@ public class RecipeListController {
         Recipe recipe = new Recipe();
         ArrayList searchResult = RecipeData.getRecipes(searchCriteria, recipeRepository.findAll());
          model.addAttribute("recipes",searchResult);
-         System.out.println(" -- " + searchResult.toString());
+
         return "/list";
     }
 

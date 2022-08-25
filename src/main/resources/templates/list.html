@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 
+
 <script type='text/javascript'>
 function setRecipeName(instruction) {
 
@@ -10,10 +11,10 @@ function setRecipeName(instruction) {
 }
 </script>
 <body>
+<div  th:replace="fragments :: page-header"></div>
 
-<div th:replace="fragments :: page-header"></div>
-<div  class="container body-content">
-<table>
+<div   class="container body-content">
+<table class="table">
     <tr>
         <th>Recipe Name</th>
         <th>Ingredients</th>
@@ -34,6 +35,7 @@ function setRecipeName(instruction) {
         </td>
     </tr>
 </table>
+
 
     <textarea id="recipeInstructions"></textarea>
 </div>
