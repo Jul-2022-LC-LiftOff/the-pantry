@@ -22,23 +22,16 @@ public class TagController {
     public String index(Model model) {
         model.addAttribute("title", "Tags");
         model.addAttribute("tags", tagRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        model.addAttribute(new Tag());
         return "tags/index";
     }
 
-    @GetMapping("add")
-    public String displayAddTag(Model model) {
-        model.addAttribute("title", "Add Tag");
-        model.addAttribute("tags", tagRepository.findAll());
-        model.addAttribute(new Tag());
-        return "tags/add";
-    }
-
     @PostMapping("add")
-    public String processAddTag(@ModelAttribute @Valid Tag newTag, Errors errors, Model model) {
+    public String addTag(@ModelAttribute @Valid Tag newTag, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Add Tag");
-            return "tags/add";
+            model.addAttribute("title", "Tags");
+            return "tags/index";
         }
 
         tagRepository.save(newTag);

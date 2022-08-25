@@ -5,7 +5,7 @@
 
 <nav th:replace="fragments :: page-header"></nav>
 
-<h2>Add Recipe</h2>
+<h2>Edit Recipe</h2>
 
 <form method="post" style="max-width:600px;">
     <div class="form-group">
@@ -36,13 +36,13 @@
         <label th:for="tags">Tags: </label>
 
         <th:block th:each="tag : ${tags}">
-            <input type="checkbox" class="form-check-input" id="tags" name="tags" th:value="${tag.id}">
+            <input type="checkbox" class="form-check-input" id="tags" name="tags" th:value="${tag.id} th:checked="${selectTags[tag.id]}">
             <label class="form-check-label" th:text="${tag.name}"></label>
         </th:block>
 
     </div>
 
-    <input class="btn btn-primary" type="submit" value="Add Recipe" />
+    <input class="btn btn-primary" type="submit" value="Update Recipe" />
 </form>
 
 </body>

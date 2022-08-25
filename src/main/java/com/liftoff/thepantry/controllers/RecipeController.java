@@ -3,6 +3,7 @@ package com.liftoff.thepantry.controllers;
 import com.liftoff.thepantry.data.*;
 import com.liftoff.thepantry.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -69,7 +70,47 @@ public class RecipeController {
         return "redirect:";
     }
 
-    @GetMapping("ingredients/{recipeId}")
+
+
+
+
+    @GetMapping("edit/{recipeId}")
+    public String editRecipe(Model model, @PathVariable int recipeId) {
+//        Optional<Recipe> recipe = null;
+//        try {
+//            recipe = recipeRepository.findById(recipeId);
+//        } catch (Exception e) {
+//            model.addAttribute("error", "Recipe not found");
+//        }
+        Optional optRecipe = recipeRepository.findById(recipeId);
+        Recipe recipe = (Recipe) optRecipe.get();
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("title", "Edit Recipe");
+        model.addAttribute("tags", tagRepository.findAll());
+        model.addAttribute("selectedTags", recipe.getTags());
+        return "recipes/edit";
+    }
+
+    @PostMapping("edit/{recipeId}")
+    public String updateRecipe(@ModelAttribute Recipe recipe, Errors errors, Model model, @PathVariable int recipeId) {
+        try {
+            recipe.setId(recipeId);
+            recipeRepository.save(recipe);
+            return "redirect:/recipes";
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            model.addAttribute("errorMessage", errorMessage);
+
+            return "recipes/index";
+        }
+    }
+
+
+
+
+    // Recipe Ingredients
+
+    @GetMapping("recipe-ingredients/{recipeId}")
     public String displayRecipeIngredient(Model model, @PathVariable int recipeId) {
 
         Optional optRecipe = recipeRepository.findById(recipeId);
@@ -79,10 +120,10 @@ public class RecipeController {
         model.addAttribute("units", unitRepository.findAll());
         model.addAttribute("ingredients", ingredientRepository.findAll());
         model.addAttribute(new RecipeIngredient());
-        return "recipes/ingredients";
+        return "recipes/recipe-ingredients";
     }
 
-    @PostMapping("ingredients/{recipeId}")
+    @PostMapping("recipe-ingredients/add")
     public String addRecipeIngredient(@ModelAttribute @Valid RecipeIngredient newRecipeIngredient,
                                       Errors errors, Model model, @RequestParam String amount, @RequestParam int recipeId, @RequestParam int unitId, @RequestParam int ingredientId) {
 
@@ -112,6 +153,12 @@ public class RecipeController {
 
         recipeIngredientRepository.save(newRecipeIngredient);
 
+        return "redirect:" + recipeId;
+    }
+
+    @PostMapping("recipe-ingredients/delete")
+    public String deleteRecipeIngredient(@RequestParam int recipeId, @RequestParam int recipeIngredientId) {
+        recipeIngredientRepository.deleteById(recipeIngredientId);
         return "redirect:" + recipeId;
     }
 

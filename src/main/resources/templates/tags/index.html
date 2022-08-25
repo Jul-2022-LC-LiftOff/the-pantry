@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head">
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container body-content">
+<h2>Tags</h2>
 
-<div th:replace="fragments :: page-header"></div>
+<nav th:replace="fragments :: page-header"></nav>
 
-<p th:unless="${tags} and ${tags.size()}">no tags!</p>
+<form method="post" action="add">
+    <div class="form-group">
+        <div class="col-xs-3">
+            <input class="form-control" placeholder="Tag Name" th:field="${tag.name}" />
+        </div>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Add" />
+        </div>
+    </div>
+</form>
+<span th:errors="${tag.name}" class="error"></span>
 
-<div class="container body-content">
-    <h2>Tags</h2>
-    <a class="btn btn-primary" th:href="@{'/tags/add'}" role="button">Add Tag</a>
-    <p>
-        <ul>
-            <li th:each="tag : ${tags}">
-                <a th:href="@{'#'}" th:text="${tag.name}"></a>
-            </li>
-        </ul>
-    </p>
-</div>
+<ul>
+    <li th:each="tag : ${tags}">
+        <a th:href="@{'#'}" th:text="${tag.name}"></a>
+    </li>
+</ul>
 
 </body>
 </html>
