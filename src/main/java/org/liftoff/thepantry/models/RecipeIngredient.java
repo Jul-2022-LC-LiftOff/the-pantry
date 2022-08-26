@@ -1,4 +1,4 @@
-package com.liftoff.thepantry.models;
+package org.liftoff.thepantry.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

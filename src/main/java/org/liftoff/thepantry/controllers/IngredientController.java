@@ -1,7 +1,7 @@
-package com.liftoff.thepantry.controllers;
+package org.liftoff.thepantry.controllers;
 
-import com.liftoff.thepantry.data.IngredientRepository;
-import com.liftoff.thepantry.models.Ingredient;
+import org.liftoff.thepantry.data.IngredientRepository;
+import org.liftoff.thepantry.models.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;

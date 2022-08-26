@@ -1,6 +1,6 @@
-package com.liftoff.thepantry.data;
+package org.liftoff.thepantry.data;
 
-import com.liftoff.thepantry.models.Unit;
+import org.liftoff.thepantry.models.Unit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

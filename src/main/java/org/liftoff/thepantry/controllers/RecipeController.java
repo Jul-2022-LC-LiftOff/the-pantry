@@ -1,16 +1,17 @@
-package com.liftoff.thepantry.controllers;
+package org.liftoff.thepantry.controllers;
 
-import com.liftoff.thepantry.data.*;
-import com.liftoff.thepantry.models.*;
+import org.liftoff.thepantry.data.*;
+import org.liftoff.thepantry.models.Ingredient;
+import org.liftoff.thepantry.models.Recipe;
+import org.liftoff.thepantry.models.RecipeIngredient;
+import org.liftoff.thepantry.models.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
