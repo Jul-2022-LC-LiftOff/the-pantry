@@ -25,12 +25,17 @@ public class Recipe extends AbstractEntity {
     public Recipe() {
     }
 
-    public Recipe(String description, String instructions, List<Tag> tagsList, List<Ingredient> ingredientList) {
+    public Recipe(String description, String instructions) {
         super();
         this.description = description;
         this.instructions = instructions;
-        this.tags = tagsList;
     }
+//    public Recipe(String description, String instructions, List<Tag> tagsList, List<Ingredient> ingredientList) {
+//        super();
+//        this.description = description;
+//        this.instructions = instructions;
+//        this.tags = tagsList;
+//    }
 
     // Getters and setters
 

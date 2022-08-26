@@ -9,8 +9,7 @@
 <p th:unless="${recipes} and ${recipes.size()}">no recipes!</p>
 
 <div class="container body-content">
-    <h2>Recipes</h2>
-    <a class="btn btn-primary" th:href="@{'/recipes/add'}" role="button">Add Recipe</a>
+    <h2>Recipes <a href="/recipes/add"><i class="bi bi-plus-circle-fill"></i></i></a></h2>
 
     <p>
     <ul>
