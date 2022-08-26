@@ -1,6 +1,7 @@
 package org.liftoff.thepantry.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class RecipeIngredient {
@@ -9,6 +10,7 @@ public class RecipeIngredient {
     @GeneratedValue
     private int id;
 
+    @NotBlank(message = "Amount is required")
     private String amount;
 
     @ManyToOne

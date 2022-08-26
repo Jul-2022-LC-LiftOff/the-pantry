@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head">
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container body-content">
+<h2>Units</h2>
 
-<div th:replace="fragments :: page-header"></div>
+<nav th:replace="fragments :: page-header"></nav>
 
-<p th:unless="${units} and ${units.size()}">no units!</p>
+<form method="post" action="add">
+    <div class="form-group">
+        <div class="col-xs-3">
+            <input class="form-control" placeholder="Unit Name" th:field="${unit.name}" />
+        </div>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Add" />
+        </div>
+    </div>
+</form>
+<span th:errors="${unit.name}" class="error"></span>
 
-<div class="container body-content">
-    <h2>Units</h2>
-    <a class="btn btn-primary" th:href="@{'/units/add'}" role="button">Add Unit</a>
-    <p>
-        <ul>
-            <li th:each="unit : ${units}">
-                <a th:href="@{'#'}" th:text="${unit.name}"></a>
-            </li>
-        </ul>
-    </p>
-</div>
+<ul>
+    <li th:each="unit : ${units}">
+        <a th:href="@{'#'}" th:text="${unit.name}"></a>
+    </li>
+</ul>
 
 </body>
 </html>

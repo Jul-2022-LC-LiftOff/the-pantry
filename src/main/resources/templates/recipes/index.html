@@ -15,7 +15,8 @@
     <p>
         <ul>
             <li th:each="recipe : ${recipes}">
-                <a th:href="@{'/recipes/ingredients/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+                <a th:href="@{'/recipes/recipe-ingredients/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+                <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
             </li>
         </ul>
     </p>
