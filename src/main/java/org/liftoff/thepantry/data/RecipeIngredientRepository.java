@@ -1,9 +1,7 @@
-package com.liftoff.thepantry.data;
+package org.liftoff.thepantry.data;
 
-import com.liftoff.thepantry.models.Ingredient;
-import com.liftoff.thepantry.models.RecipeIngredient;
+import org.liftoff.thepantry.models.RecipeIngredient;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

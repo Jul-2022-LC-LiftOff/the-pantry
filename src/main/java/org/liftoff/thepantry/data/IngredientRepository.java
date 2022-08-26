@@ -1,6 +1,6 @@
-package com.liftoff.thepantry.data;
+package org.liftoff.thepantry.data;
 
-import com.liftoff.thepantry.models.Ingredient;
+import org.liftoff.thepantry.models.Ingredient;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
