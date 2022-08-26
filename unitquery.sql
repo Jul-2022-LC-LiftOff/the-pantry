@@ -1,0 +1,2 @@
+CREATE TABLE unit (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(25));
+INSERT INTO unit (name) VALUES('teaspoon(s)'), ('tablepoon(s)'), ('cup(s)'), ('ounce(s)'), ('pint(s)'), ('quart(s)'), ('gallon(s)');

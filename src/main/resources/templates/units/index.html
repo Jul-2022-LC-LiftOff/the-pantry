@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container body-content">
+<h2>Units</h2>
+
+<nav th:replace="fragments :: page-header"></nav>
+
+<form method="post" action="add">
+    <div class="form-group">
+        <div class="col-xs-3">
+            <input class="form-control" placeholder="Unit Name" th:field="${unit.name}" />
+        </div>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Add" />
+        </div>
+    </div>
+</form>
+<span th:errors="${unit.name}" class="error"></span>
+
+<ul>
+    <li th:each="unit : ${units}">
+        <a th:href="@{'#'}" th:text="${unit.name}"></a>
+    </li>
+</ul>
+
+</body>
+</html>
