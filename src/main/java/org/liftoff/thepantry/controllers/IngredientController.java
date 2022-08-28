@@ -21,7 +21,8 @@ public class IngredientController {
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("title", "Ingredients");
-        model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+       // model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        model.addAttribute("ingredients", ingredientRepository.findAll());
         model.addAttribute(new Ingredient());
         return "ingredients/index";
     }
