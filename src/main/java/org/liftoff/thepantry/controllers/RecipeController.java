@@ -6,6 +6,7 @@ import org.liftoff.thepantry.models.Recipe;
 import org.liftoff.thepantry.models.RecipeIngredient;
 import org.liftoff.thepantry.models.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -36,7 +37,7 @@ public class RecipeController {
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("title", "Recipes");
-        model.addAttribute("recipes", recipeRepository.findAll());
+        model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         return "recipes/index";
     }
 
@@ -54,8 +55,7 @@ public class RecipeController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
-            model.addAttribute("tags", tagRepository.findAll());
-
+            //model.addAttribute("tags", tagRepository.findAll());
             return "recipes/add";
         }
 
@@ -85,8 +85,8 @@ public class RecipeController {
         model.addAttribute("title", "Edit Recipe");
         //model.addAttribute("tags", tagRepository.findAll());
         model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
-        model.addAttribute("units", unitRepository.findAll());
-        model.addAttribute("ingredients", ingredientRepository.findAll());
+        model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new RecipeIngredient());
         return "recipes/edit";
     }

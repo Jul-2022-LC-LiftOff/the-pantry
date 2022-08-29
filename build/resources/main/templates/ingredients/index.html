@@ -20,7 +20,11 @@
 
 <ul>
     <li th:each="ingredient : ${ingredients}">
-        <a th:href="@{'#'}" th:text="${ingredient.name}"></a>
+        <span th:text="${ingredient.name}"></span>
+        <form method="post" action="delete" style="display:inline">
+            <input type="hidden" name="ingredientId" th:value="${ingredient.id}" />
+            <button type="submit" class="btn btn-link" th:onclick="if(!(confirm('Are you sure you want to delete?') )) return false" ><i class="bi bi-trash"></i></button>
+        </form>
     </li>
 </ul>
 
