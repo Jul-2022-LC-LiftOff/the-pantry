@@ -135,13 +135,13 @@ public class RecipeController {
 
         recipeIngredientRepository.save(newRecipeIngredient);
 
-        return "redirect:" + recipeId;
+        return "redirect:" + recipeId + "#ingredients";
     }
 
     @PostMapping("edit/delete")
     public String deleteRecipeIngredient(@RequestParam int recipeId, @RequestParam int recipeIngredientId) {
         recipeIngredientRepository.deleteById(recipeIngredientId);
-        return "redirect:" + recipeId;
+        return "redirect:" + recipeId + "#ingredients";
     }
 
 
