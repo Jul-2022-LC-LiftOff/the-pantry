@@ -47,6 +47,7 @@
     </form>
 
 <h3>Ingredients</h3>
+<a id="ingredients">
 <form method="post" action="add-ingredient" style="max-width:600px;">
     <div class="form-group">
         <input type="hidden" name="recipeId" th:value="${recipe.id}" />
@@ -86,7 +87,7 @@
         <form method="post" action="delete" style="display:inline">
             <input type="hidden" name="recipeId" th:value="${recipe.id}" />
             <input type="hidden" name="recipeIngredientId" th:value="${recipeIngredient.id}" />
-            <button type="submit" class="btn btn-link"><i class="bi bi-trash"></i></button>
+            <button type="submit" class="btn btn-link" th:onclick="if(!(confirm('Are you sure you want to delete?') )) return false" ><i class="bi bi-trash"></i></button>
         </form>
     </li>
 </ul>

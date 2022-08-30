@@ -19,8 +19,11 @@ public class RecipeIngredient {
     @ManyToOne
     private Unit unit;
 
-    @ManyToOne
+    @OneToOne
     private Recipe recipe;
+
+//    @ManyToOne
+//    private Recipe recipe;
 
     public RecipeIngredient() {
     }

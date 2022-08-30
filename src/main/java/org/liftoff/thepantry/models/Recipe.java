@@ -18,9 +18,13 @@ public class Recipe extends AbstractEntity {
     @JoinTable(name = "recipe_tag", joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags = new ArrayList<>();
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "recipe_id")
-    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+    private RecipeIngredient recipeIngredient;
+
+//    @OneToMany
+//    @JoinColumn(name = "recipe_id")
+//    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
     public Recipe() {
     }
@@ -63,12 +67,12 @@ public class Recipe extends AbstractEntity {
         this.tags = tags;
     }
 
-    public List<RecipeIngredient> getRecipeIngredients() {
-        return recipeIngredients;
-    }
-
-    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
-    }
+//    public List<RecipeIngredient> getRecipeIngredients() {
+//        return recipeIngredients;
+//    }
+//
+//    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
+//        this.recipeIngredients = recipeIngredients;
+//    }
 
 }

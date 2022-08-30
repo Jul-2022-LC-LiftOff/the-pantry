@@ -38,4 +38,10 @@ public class IngredientController {
         return "redirect:";
     }
 
+    @PostMapping("delete")
+    public String deleteIngredient(@RequestParam int ingredientId) {
+        ingredientRepository.deleteById(ingredientId);
+        return "redirect:";
+    }
+
 }
