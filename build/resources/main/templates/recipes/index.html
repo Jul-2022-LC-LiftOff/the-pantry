@@ -1,26 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head">
-</head>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
 <body>
 
-<div th:replace="fragments :: page-header"></div>
+    <div th:replace="fragments :: page-header"></div>
 
-<p th:unless="${recipes} and ${recipes.size()}">no recipes!</p>
+    <div class="container body-content py-3">
 
-<div class="container body-content">
-    <h2>Recipes <a href="/recipes/add"><i class="bi bi-plus-circle-fill"></i></i></a></h2>
+        <h2>Recipes <a href="/recipes/add"><i class="bi bi-plus-circle-fill"></i></a> <i class="bi bi-plus-circle-fill text-primary" role="button" data-bs-toggle="modal" data-bs-target="#addModal"></i></h2>
 
-    <p>
-    <ul>
-        <li th:each="recipe : ${recipes}">
-            <a th:href="@{'/recipes/recipe-ingredients/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-            <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
-        </li>
-    </ul>
-    </p>
+        <p class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></p>
+        <p th:unless="${recipes} and ${recipes.size()}">no recipes!</p>
 
-</div>
+        <div class="container">
+            <ul>
+                <li th:each="recipe : ${recipes}">
+                    <span th:text="${recipe.name}"></span>
+                    <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Add Recipe</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <form action="add" method="post" id="add">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Name</span>
+                                        <input class="form-control" th:field="${recipe.name}" />
+                                        <input type="hidden" class="form-control" th:field="${recipe.description}" />
+                                        <input type="hidden" class="form-control" th:field="${recipe.instructions}" />
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="add" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

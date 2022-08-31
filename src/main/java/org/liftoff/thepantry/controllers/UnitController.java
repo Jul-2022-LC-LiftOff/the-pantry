@@ -31,6 +31,7 @@ public class UnitController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Units");
+            model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             return "units/index";
         }
 

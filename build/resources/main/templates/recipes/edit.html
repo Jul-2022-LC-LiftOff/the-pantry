@@ -1,96 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class="container body-content">
+<body>
 
-<nav th:replace="fragments :: page-header"></nav>
+    <div th:replace="fragments :: page-header"></div>
 
-<h2>Edit Recipe</h2>
+    <div class="container body-content py-3">
 
-<form method="post" action="update-recipe" style="max-width:600px;">
-    <input type="hidden" name="recipeId" th:value="${recipe.id}" />
-    <div class="form-group">
-        <label th:for="name">Name</label>
+        <h2>Edit Recipe</h2>
 
-        <input class="form-control" th:field="${recipe.name}" />
-        <span th:errors="${recipe.name}" class="error"></span>
-
-    </div>
-
-    <div class="form-group">
-        <label th:for="description">Description</label>
-
-        <textarea class="form-control" th:field="${recipe.description}" rows ="5" />
-        <span th:errors="${recipe.description}" class="error"></span>
-
-    </div>
-
-    <div class="form-group">
-        <label th:for="instructions">Instructions</label>
-
-        <textarea class="form-control" th:field="${recipe.instructions}" rows ="10" />
-        <span th:errors="${recipe.instructions}" class="error"></span>
-
-    </div>
-    <!--
-        <div class="form-group">
-            <label th:for="tags">Tags: </label>
-
-            <th:block th:each="tag : ${tags}">
-                <input type="checkbox" class="form-check-input" id="tags" name="tags" th:value="${tag.id}">
-                <label class="form-check-label" th:text="${tag.name}"></label>
-            </th:block>
-
+        <div class="container py-3">
+            <form method="post" action="update-recipe" style="max-width:600px;">
+                <input type="hidden" name="recipeId" th:value="${recipe.id}" />
+                <div class="form-group">
+                    <label th:for="name">Name</label>
+                    <input class="form-control" th:field="${recipe.name}" />
+                    <span th:errors="${recipe.name}" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label th:for="description">Description</label>
+                    <textarea class="form-control" th:field="${recipe.description}" rows ="5" />
+                    <span th:errors="${recipe.description}" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label th:for="instructions">Instructions</label>
+                    <textarea class="form-control" th:field="${recipe.instructions}" rows ="10" />
+                    <span th:errors="${recipe.instructions}" class="error"></span>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Update Recipe" />
+            </form>
         </div>
-        -->
-    <input class="btn btn-primary" type="submit" value="Update Recipe" />
-    </form>
 
-<h3>Ingredients</h3>
-<a id="ingredients">
-<form method="post" action="add-ingredient" style="max-width:600px;">
-    <div class="form-group">
-        <input type="hidden" name="recipeId" th:value="${recipe.id}" />
-        <table>
-            <tr>
-                <th>Amount</th>
-                <th>Unit</th>
-                <th>Ingredient</th>
-            </tr>
-            <tr>
-                <td>
-                    <input class="form-control" size="8" name="amount" />
-                </td>
-                <td>
-                    <select  class="form-control" name="unitId">
-                        <option value="0"></option>
-                        <option th:each="unit : ${units}" th:text="${unit.name}" th:value="${unit.id}"></option>
-                    </select>
-                </td>
-                <td>
-                    <select class="form-control" name="ingredientId">
-                        <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"></option>
-                    </select>
-                </td>
-                <td>
-                    <input class="btn btn-primary" type="submit" value="Add" />
-                </td>
-            </tr>
-        </table>
-        <p th:each="err : ${#fields.errors('*')}" th:text="${err}">Error</p>
-    </div>
-</form>
-
-<ul>
-    <li th:each="recipeIngredient : ${recipeIngredients}">
-        <span th:text="${recipeIngredient.amount}"></span> <span th:text="${recipeIngredient.unit}"></span> <span th:text="${recipeIngredient.ingredient}"></span>
-        <form method="post" action="delete" style="display:inline">
-            <input type="hidden" name="recipeId" th:value="${recipe.id}" />
-            <input type="hidden" name="recipeIngredientId" th:value="${recipeIngredient.id}" />
-            <button type="submit" class="btn btn-link" th:onclick="if(!(confirm('Are you sure you want to delete?') )) return false" ><i class="bi bi-trash"></i></button>
+        <h3>Ingredients</h3>
+        <a id="ingredients"></a>
+        <form method="post" action="add-ingredient" style="max-width:600px;">
+            <div class="form-group">
+                <input type="hidden" name="recipeId" th:value="${recipe.id}" />
+                <table>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Unit</th>
+                        <th>Ingredient</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control" size="8" name="amount" />
+                        </td>
+                        <td>
+                            <select  class="form-control" name="unitId">
+                                <option value="0"></option>
+                                <option th:each="unit : ${units}" th:text="${unit.name}" th:value="${unit.id}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name="ingredientId">
+                                <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn btn-primary" type="submit" value="Add" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </form>
-    </li>
-</ul>
 
-    </body>
-    </html>
+        <ul>
+            <li th:each="recipeIngredient : ${recipeIngredients}">
+                <span th:text="${recipeIngredient.amount}"></span> <span th:text="${recipeIngredient.unit}"></span> <span th:text="${recipeIngredient.ingredient}"></span>
+                <form method="post" action="delete" style="display:inline">
+                    <input type="hidden" name="recipeId" th:value="${recipe.id}" />
+                    <input type="hidden" name="recipeIngredientId" th:value="${recipeIngredient.id}" />
+                    <button type="submit" class="btn btn-link" th:onclick="if(!(confirm('Are you sure you want to delete?') )) return false" ><i class="bi bi-trash"></i></button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

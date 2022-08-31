@@ -1,28 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class="container body-content">
-<h2>Units</h2>
+<body>
 
-<nav th:replace="fragments :: page-header"></nav>
+<div th:replace="fragments :: page-header"></div>
 
-<form method="post" action="add">
-    <div class="form-group">
-        <div class="col-xs-3">
-            <input class="form-control" placeholder="Unit Name" th:field="${unit.name}" />
-        </div>
-        <div>
-            <input class="btn btn-primary" type="submit" value="Add" />
-        </div>
+<div class="container body-content py-3">
+    <h2>Add Units</h2>
+
+    <div class="container py-3">
+        <form method="post" action="add">
+            <div class="w-50">
+                <div class="input-group">
+                    <span class="input-group-text" id="">Name</span>
+                    <input class="form-control" placeholder="enter name" th:field="${unit.name}" />
+                    <input class="btn btn-secondary" type="submit" value="Add" />
+                </div>
+            </div>
+        </form>
+        <span th:errors="${unit.name}" class="text-danger"></span>
     </div>
-</form>
-<span th:errors="${unit.name}" class="error"></span>
 
-<ul>
-    <li th:each="unit : ${units}">
-        <span th:text="${unit.name}"></span>
-    </li>
-</ul>
+    <div class="container py-3">
+        <h4>Units</h4>
+        <ul>
+            <li th:each="unit : ${units}">
+                <span th:text="${unit.name}"></span>
+            </li>
+        </ul>
+    </div>
+
+</div>
 
 </body>
 </html>

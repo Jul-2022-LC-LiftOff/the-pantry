@@ -1,32 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class="container body-content">
-<h2>Ingredients</h2>
+<body>
 
-<nav th:replace="fragments :: page-header"></nav>
+<div th:replace="fragments :: page-header"></div>
 
-<form method="post" action="add">
-    <div class="form-group">
-        <div class="col-xs-3">
-            <input class="form-control" placeholder="Ingredient Name" th:field="${ingredient.name}" />
-        </div>
-        <div>
-            <input class="btn btn-primary" type="submit" value="Add" />
-        </div>
-    </div>
-</form>
-<span th:errors="${ingredient.name}" class="error"></span>
+<div class="container body-content py-3">
+    <h2>Add Ingredients</h2>
 
-<ul>
-    <li th:each="ingredient : ${ingredients}">
-        <span th:text="${ingredient.name}"></span>
-        <form method="post" action="delete" style="display:inline">
-            <input type="hidden" name="ingredientId" th:value="${ingredient.id}" />
-            <button type="submit" class="btn btn-link" th:onclick="if(!(confirm('Are you sure you want to delete?') )) return false" ><i class="bi bi-trash"></i></button>
+    <div class="container py-3">
+        <form method="post" action="add">
+            <div class="w-50">
+                <div class="input-group">
+                    <span class="input-group-text" id="">Name</span>
+                    <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
+                    <input class="btn btn-secondary" type="submit" value="Add" />
+                </div>
+            </div>
         </form>
-    </li>
-</ul>
+        <span th:errors="${ingredient.name}" class="text-danger"></span>
+    </div>
+
+    <div class="container py-3">
+        <h4>Ingredients</h4>
+        <ul>
+            <li th:each="ingredient : ${ingredients}">
+                <span th:text="${ingredient.name}"></span>
+            </li>
+        </ul>
+    </div>
+
+</div>
 
 </body>
 </html>

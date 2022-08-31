@@ -22,9 +22,6 @@ public class RecipeIngredient {
     @OneToOne
     private Recipe recipe;
 
-//    @ManyToOne
-//    private Recipe recipe;
-
     public RecipeIngredient() {
     }
 

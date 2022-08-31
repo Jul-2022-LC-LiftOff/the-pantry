@@ -31,6 +31,7 @@ public class IngredientController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Ingredients");
+            model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             return "ingredients/index";
         }
 

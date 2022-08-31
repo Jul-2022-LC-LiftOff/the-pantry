@@ -1,6 +1,9 @@
 package org.liftoff.thepantry.controllers;
 
-import org.liftoff.thepantry.data.*;
+import org.liftoff.thepantry.data.IngredientRepository;
+import org.liftoff.thepantry.data.RecipeIngredientRepository;
+import org.liftoff.thepantry.data.RecipeRepository;
+import org.liftoff.thepantry.data.UnitRepository;
 import org.liftoff.thepantry.models.Ingredient;
 import org.liftoff.thepantry.models.Recipe;
 import org.liftoff.thepantry.models.RecipeIngredient;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -21,9 +25,6 @@ public class RecipeController {
 
     @Autowired
     private RecipeRepository recipeRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
 
     @Autowired
     private IngredientRepository ingredientRepository;
@@ -38,33 +39,30 @@ public class RecipeController {
     public String index(Model model) {
         model.addAttribute("title", "Recipes");
         model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        model.addAttribute(new Recipe());
         return "recipes/index";
     }
 
     @GetMapping("add")
     public String  displayAddRecipe(Model model) {
         model.addAttribute("title", "Add Recipe");
-//        model.addAttribute("tags", tagRepository.findAll());
         model.addAttribute(new Recipe());
         return "recipes/add";
     }
 
     @PostMapping("add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
-                                   Errors errors, Model model, @RequestParam String description, @RequestParam String instructions) {
+                                   Errors errors, Model model, @RequestParam String description, @RequestParam String instructions, RedirectAttributes redirAttrs) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
-            //model.addAttribute("tags", tagRepository.findAll());
-            return "recipes/add";
+            redirAttrs.addFlashAttribute("error", "Name is required. Try adding a recipe again.");
+            return "redirect:/recipes/";
         }
 
         newRecipe.setDescription(description);
 
         newRecipe.setInstructions(instructions);
-
-//        List<Tag> tagObjs = (List<Tag>) tagRepository.findAllById(tags);
-//        newRecipe.setTags(tagObjs);
 
         recipeRepository.save(newRecipe);
 
