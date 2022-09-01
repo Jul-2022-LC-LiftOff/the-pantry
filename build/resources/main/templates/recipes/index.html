@@ -7,14 +7,14 @@
 
     <div class="container body-content py-3">
 
-        <h2>Recipes <a href="/recipes/add"><i class="bi bi-plus-circle-fill"></i></a> <i class="bi bi-plus-circle-fill text-primary" role="button" data-bs-toggle="modal" data-bs-target="#addModal"></i></h2>
+        <h1>Recipes <a href="/recipes/add"><i class="bi bi-plus-circle-fill"></i></a> <i class="bi bi-plus-circle-fill text-primary" role="button" data-bs-toggle="modal" data-bs-target="#addModal"></i></h1>
 
         <p class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></p>
         <p th:unless="${recipes} and ${recipes.size()}">no recipes!</p>
 
         <div class="container">
-            <ul>
-                <li th:each="recipe : ${recipes}">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="recipe, rowStat : ${recipes}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                     <span th:text="${recipe.name}"></span>
                     <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
                 </li>
@@ -48,6 +48,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 </body>

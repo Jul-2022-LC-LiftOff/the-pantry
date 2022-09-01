@@ -35,172 +35,94 @@ public class RecipeController {
     @Autowired
     private UnitRepository unitRepository;
 
+    // display/add/edit/save recipe
     @GetMapping("")
     public String index(Model model) {
-        model.addAttribute("title", "Recipes");
         model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new Recipe());
         return "recipes/index";
     }
 
-    @GetMapping("add")
-    public String  displayAddRecipe(Model model) {
-        model.addAttribute("title", "Add Recipe");
-        model.addAttribute(new Recipe());
-        return "recipes/add";
-    }
-
     @PostMapping("add")
-    public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
-                                   Errors errors, Model model, @RequestParam String description, @RequestParam String instructions, RedirectAttributes redirAttrs) {
-
+    public String addRecipe(@ModelAttribute @Valid Recipe newRecipe, Errors errors, RedirectAttributes redirAttrs) {
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Add Recipe");
             redirAttrs.addFlashAttribute("error", "Name is required. Try adding a recipe again.");
             return "redirect:/recipes/";
         }
-
-        newRecipe.setDescription(description);
-
-        newRecipe.setInstructions(instructions);
-
         recipeRepository.save(newRecipe);
-
         int recipeId = newRecipe.getId();
-
         return "redirect:edit/" + recipeId;
     }
-
-
-
-
 
     @GetMapping("edit/{recipeId}")
     public String editRecipe(Model model, @PathVariable int recipeId) {
         Optional optRecipe = recipeRepository.findById(recipeId);
         Recipe recipe = (Recipe) optRecipe.get();
         model.addAttribute("recipe", recipe);
-        model.addAttribute("title", "Edit Recipe");
-        //model.addAttribute("tags", tagRepository.findAll());
-        model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
         model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+        model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
         model.addAttribute(new RecipeIngredient());
+        model.addAttribute(new Ingredient());
         return "recipes/edit";
     }
 
-    @PostMapping("edit/update-recipe")
-    public String updateRecipe(@ModelAttribute Recipe recipe, Errors errors, Model model, @RequestParam int recipeId) {
-        try {
-            recipe.setId(recipeId);
-            recipeRepository.save(recipe);
-            return "redirect:" + recipeId;
-        } catch (Exception ex) {
-            String errorMessage = ex.getMessage();
-            model.addAttribute("errorMessage", errorMessage);
-
+    @PostMapping("edit/save-recipe")
+    public String saveRecipe(@ModelAttribute Recipe recipe, Errors errors, Model model, RedirectAttributes redirAttrs, @RequestParam int recipeId) {
+        if (errors.hasErrors()) {
+            //redirAttrs.addFlashAttribute("error", "Name is required. Try adding a recipe again.");
             return "redirect:" + recipeId;
         }
+        recipe.setId(recipeId);
+        recipeRepository.save(recipe);
+        return "redirect:" + recipeId;
     }
 
+
+    // add/delete recipe ingredients
     @PostMapping("edit/add-ingredient")
     public String addRecipeIngredient(@ModelAttribute @Valid RecipeIngredient newRecipeIngredient,
                                       Errors errors, Model model, @RequestParam String amount, @RequestParam int recipeId, @RequestParam int unitId, @RequestParam int ingredientId) {
-
         if (errors.hasErrors()) {
-            return "redirect:" + recipeId;
+            return "redirect:" + recipeId + "#ingredients";
         }
-
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
         if(optRecipe.isPresent()) {
             Recipe recipe = optRecipe.get();
             newRecipeIngredient.setRecipe(recipe);
         }
-
         Optional<Unit> optUnit = unitRepository.findById(unitId);
         if(optUnit.isPresent()) {
             Unit unit = optUnit.get();
             newRecipeIngredient.setUnit(unit);
         }
-
         Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
         if(optIngredient.isPresent()) {
             Ingredient ingredient = optIngredient.get();
             newRecipeIngredient.setIngredient(ingredient);
         }
-
         newRecipeIngredient.setAmount(amount);
-
         recipeIngredientRepository.save(newRecipeIngredient);
-
         return "redirect:" + recipeId + "#ingredients";
     }
 
-    @PostMapping("edit/delete")
+    @PostMapping("edit/delete-ingredient")
     public String deleteRecipeIngredient(@RequestParam int recipeId, @RequestParam int recipeIngredientId) {
         recipeIngredientRepository.deleteById(recipeIngredientId);
         return "redirect:" + recipeId + "#ingredients";
     }
 
 
-
-
-
-
-
-
-    // Recipe Ingredients
-
-//    @GetMapping("recipe-ingredients/{recipeId}")
-//    public String displayRecipeIngredient(Model model, @PathVariable int recipeId) {
-//
-//        Optional optRecipe = recipeRepository.findById(recipeId);
-//        Recipe recipe = (Recipe) optRecipe.get();
-//        model.addAttribute("recipe", recipe);
-//        model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
-//        model.addAttribute("units", unitRepository.findAll());
-//        model.addAttribute("ingredients", ingredientRepository.findAll());
-//        model.addAttribute(new RecipeIngredient());
-//        return "recipes/recipe-ingredients";
-//    }
-//
-//    @PostMapping("recipe-ingredients/add")
-//    public String addRecipeIngredient(@ModelAttribute @Valid RecipeIngredient newRecipeIngredient,
-//                                      Errors errors, Model model, @RequestParam String amount, @RequestParam int recipeId, @RequestParam int unitId, @RequestParam int ingredientId) {
-//
-//        if (errors.hasErrors()) {
-//            return "redirect:" + recipeId;
-//        }
-//
-//        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
-//        if(optRecipe.isPresent()) {
-//            Recipe recipe = optRecipe.get();
-//            newRecipeIngredient.setRecipe(recipe);
-//        }
-//
-//        Optional<Unit> optUnit = unitRepository.findById(unitId);
-//        if(optUnit.isPresent()) {
-//            Unit unit = optUnit.get();
-//            newRecipeIngredient.setUnit(unit);
-//        }
-//
-//        Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
-//        if(optIngredient.isPresent()) {
-//            Ingredient ingredient = optIngredient.get();
-//            newRecipeIngredient.setIngredient(ingredient);
-//        }
-//
-//        newRecipeIngredient.setAmount(amount);
-//
-//        recipeIngredientRepository.save(newRecipeIngredient);
-//
-//        return "redirect:" + recipeId;
-//    }
-//
-//    @PostMapping("recipe-ingredients/delete")
-//    public String deleteRecipeIngredient(@RequestParam int recipeId, @RequestParam int recipeIngredientId) {
-//        recipeIngredientRepository.deleteById(recipeIngredientId);
-//        return "redirect:" + recipeId;
-//    }
+    // add new ingredient to list of ingredients
+    @PostMapping("edit/new-ingredient")
+    public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, @RequestParam int recipeId) {
+        if (errors.hasErrors()) {
+            model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+            model.addAttribute("errors", "Name is required.");
+            return "ingredients/index";
+        }
+        ingredientRepository.save(newIngredient);
+        return "redirect:" + recipeId + "#ingredients";
+    }
 
 }

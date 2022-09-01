@@ -6,7 +6,7 @@
 <div th:replace="fragments :: page-header"></div>
 
 <div class="container body-content py-3">
-    <h2>Add Units</h2>
+    <h1>Units</h1>
 
     <div class="container py-3">
         <form method="post" action="add">
@@ -14,17 +14,16 @@
                 <div class="input-group">
                     <span class="input-group-text" id="">Name</span>
                     <input class="form-control" placeholder="enter name" th:field="${unit.name}" />
-                    <input class="btn btn-secondary" type="submit" value="Add" />
+                    <input class="btn btn-primary" type="submit" value="Add" />
                 </div>
             </div>
         </form>
-        <span th:errors="${unit.name}" class="text-danger"></span>
     </div>
+    <p th:errors="${unit.name}" class="alert alert-danger"></p>
 
     <div class="container py-3">
-        <h4>Units</h4>
-        <ul>
-            <li th:each="unit : ${units}">
+        <ul class="list-group">
+            <li class="list-group-item" th:each="unit, rowStat : ${units}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                 <span th:text="${unit.name}"></span>
             </li>
         </ul>

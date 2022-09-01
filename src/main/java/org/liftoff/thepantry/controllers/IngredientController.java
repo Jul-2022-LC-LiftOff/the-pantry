@@ -20,7 +20,6 @@ public class IngredientController {
 
     @GetMapping("")
     public String index(Model model) {
-        model.addAttribute("title", "Ingredients");
         model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new Ingredient());
         return "ingredients/index";
@@ -30,8 +29,8 @@ public class IngredientController {
     public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Ingredients");
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+            model.addAttribute("errors", errors);
             return "ingredients/index";
         }
 
