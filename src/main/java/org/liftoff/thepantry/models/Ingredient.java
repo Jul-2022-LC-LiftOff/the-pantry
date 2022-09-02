@@ -14,7 +14,7 @@ public class Ingredient extends AbstractEntity {
     public Ingredient() {
     }
 
-    // Getters and Setters
+    // getters and setters
 
     public List<RecipeIngredient> getRecipeIngredients() {
         return recipeIngredients;

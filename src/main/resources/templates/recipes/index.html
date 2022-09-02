@@ -7,16 +7,43 @@
 
     <div class="container body-content py-3">
 
-        <h1>Recipes <a href="/recipes/add"><i class="bi bi-plus-circle-fill"></i></a> <i class="bi bi-plus-circle-fill text-primary" role="button" data-bs-toggle="modal" data-bs-target="#addModal"></i></h1>
+        <h1>Recipes <i class="bi bi-plus-circle-fill text-primary" role="button" data-bs-toggle="modal" data-bs-target="#addModal"></i></h1>
 
-        <p class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></p>
-        <p th:unless="${recipes} and ${recipes.size()}">no recipes!</p>
+        <div class="container py-3">
+            <form method="post" action="add-recipe">
+                <div class="w-50">
+                    <div class="input-group">
+                        <span class="input-group-text" id="">Name</span>
+                        <input class="form-control" placeholder="enter name" th:field="${recipe.name}" />
+                        <input class="btn btn-primary" type="submit" value="Next" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p th:errors="${recipe.name}" class="alert alert-danger"></p>
+        <p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
 
         <div class="container">
             <ul class="list-group">
                 <li class="list-group-item" th:each="recipe, rowStat : ${recipes}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                     <span th:text="${recipe.name}"></span>
                     <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
+                    <i class="bi bi-trash text-primary" role="button" data-bs-toggle="modal" th:data-bs-target="'#deleteRecipeModal-' + ${rowStat.index}"></i>
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="'deleteRecipeModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'deleteRecipeModalLabel-' + ${rowStat.index}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete?</p>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form method="post" action="delete-recipe" class="d-inline">
+                                        <input type="hidden" name="recipeId" th:value="${recipe.id}" />
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -31,12 +58,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <form action="add" method="post" id="add">
+                            <form action="add-recipe" method="post" id="add" th:object="${recipe}">
                                     <div class="input-group">
                                         <span class="input-group-text">Name</span>
-                                        <input class="form-control" th:field="${recipe.name}" />
-                                        <input type="hidden" class="form-control" th:field="${recipe.description}" />
-                                        <input type="hidden" class="form-control" th:field="${recipe.instructions}" />
+                                        <input class="form-control" th:field="*{name}" />
                                     </div>
                             </form>
                         </div>

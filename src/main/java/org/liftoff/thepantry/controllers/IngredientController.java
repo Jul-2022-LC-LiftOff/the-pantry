@@ -27,13 +27,11 @@ public class IngredientController {
 
     @PostMapping("add")
     public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model) {
-
         if (errors.hasErrors()) {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             model.addAttribute("errors", errors);
             return "ingredients/index";
         }
-
         ingredientRepository.save(newIngredient);
         return "redirect:";
     }

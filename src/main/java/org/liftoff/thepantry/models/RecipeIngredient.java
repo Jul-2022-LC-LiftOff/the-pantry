@@ -32,7 +32,7 @@ public class RecipeIngredient {
         this.unit = unit;
     }
 
-    // Getters and Setters
+    // getters and setters
 
     public int getId() {
         return id;

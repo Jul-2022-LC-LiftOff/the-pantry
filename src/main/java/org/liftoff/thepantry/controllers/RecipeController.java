@@ -14,9 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -35,7 +35,8 @@ public class RecipeController {
     @Autowired
     private UnitRepository unitRepository;
 
-    // display/add/edit/save recipe
+    // display/add/delete/edit/save recipe
+
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
@@ -43,15 +44,23 @@ public class RecipeController {
         return "recipes/index";
     }
 
-    @PostMapping("add")
-    public String addRecipe(@ModelAttribute @Valid Recipe newRecipe, Errors errors, RedirectAttributes redirAttrs) {
+    @PostMapping("add-recipe")
+    public String addRecipe(Model model, @ModelAttribute @Valid Recipe newRecipe, Errors errors) {
         if (errors.hasErrors()) {
-            redirAttrs.addFlashAttribute("error", "Name is required. Try adding a recipe again.");
-            return "redirect:/recipes/";
+            model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+            return "recipes/index";
         }
         recipeRepository.save(newRecipe);
         int recipeId = newRecipe.getId();
         return "redirect:edit/" + recipeId;
+    }
+
+    @PostMapping("delete-recipe")
+    public String deleteRecipe(@RequestParam int recipeId) {
+        List recipeIngredients = recipeIngredientRepository.findByRecipeId(recipeId);
+        recipeIngredientRepository.deleteAll(recipeIngredients);
+        recipeRepository.deleteById(recipeId);
+        return "redirect:";
     }
 
     @GetMapping("edit/{recipeId}")
@@ -68,10 +77,9 @@ public class RecipeController {
     }
 
     @PostMapping("edit/save-recipe")
-    public String saveRecipe(@ModelAttribute Recipe recipe, Errors errors, Model model, RedirectAttributes redirAttrs, @RequestParam int recipeId) {
+    public String saveRecipe(@ModelAttribute Recipe recipe, @RequestParam int recipeId, Errors errors) {
         if (errors.hasErrors()) {
-            //redirAttrs.addFlashAttribute("error", "Name is required. Try adding a recipe again.");
-            return "redirect:" + recipeId;
+            return "recipes/edit/" + recipeId;
         }
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
@@ -79,7 +87,22 @@ public class RecipeController {
     }
 
 
+
+    @PostMapping("edit/update-recipe")
+    public String updateRecipe(@ModelAttribute Recipe recipe, Model model, @RequestParam int recipeId, Errors errors) {
+        if (errors.hasErrors()) {
+            return "recipes/edit/" + recipeId;
+        }
+        recipe.setId(recipeId);
+        recipeRepository.save(recipe);
+        return "redirect:" + recipeId;
+    }
+
+
+
+
     // add/delete recipe ingredients
+
     @PostMapping("edit/add-ingredient")
     public String addRecipeIngredient(@ModelAttribute @Valid RecipeIngredient newRecipeIngredient,
                                       Errors errors, Model model, @RequestParam String amount, @RequestParam int recipeId, @RequestParam int unitId, @RequestParam int ingredientId) {
@@ -112,10 +135,10 @@ public class RecipeController {
         return "redirect:" + recipeId + "#ingredients";
     }
 
-
     // add new ingredient to list of ingredients
+
     @PostMapping("edit/new-ingredient")
-    public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, @RequestParam int recipeId) {
+    public String newIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, @RequestParam int recipeId) {
         if (errors.hasErrors()) {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             model.addAttribute("errors", "Name is required.");

@@ -14,7 +14,7 @@ public class Unit extends AbstractEntity {
     public Unit() {
     }
 
-    // Getters and Setters
+    // getters and setters
 
     public List<RecipeIngredient> getRecipeIngredients() {
         return recipeIngredients;

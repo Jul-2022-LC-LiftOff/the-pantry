@@ -28,13 +28,11 @@ public class UnitController {
 
     @PostMapping("add")
     public String addUnit(@ModelAttribute @Valid Unit newUnit, Errors errors, Model model) {
-
         if (errors.hasErrors()) {
             model.addAttribute("title", "Units");
             model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             return "units/index";
         }
-
         unitRepository.save(newUnit);
         return "redirect:";
     }

@@ -26,7 +26,7 @@ public class Recipe extends AbstractEntity {
         this.instructions = instructions;
     }
 
-    // Getters and setters
+    // getters and setters
 
     public String getDescription() {
         return description;
