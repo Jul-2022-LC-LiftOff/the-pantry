@@ -10,12 +10,12 @@
         <h1>Edit Recipe</h1>
 
         <div class="container py-3">
-            <form method="post" action="save-recipe">
+            <form method="post" action="update-recipe">
                 <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Name</span>
                     <input class="form-control" th:field="${recipe.name}" />
-                    <p class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></p>
+                    <p th:errors="${recipe.name}" class="alert alert-danger"></p>
                 </div>
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Description</span>
@@ -25,15 +25,12 @@
                     <span class="input-group-text w-25">Instructions</span>
                     <textarea class="form-control" th:field="${recipe.instructions}" rows ="6"></textarea>
                 </div>
-                <input class="btn btn-primary" type="submit" value="Save Recipe" />
-            </form>
+                <button class="btn btn-primary" type="submit">Save</button>
+
         </div>
 
         <div class="container py-3">
             <h3>Ingredients</h3>
-
-            <form method="post" action="add-ingredient">
-                <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                 <div class="row">
                     <div class="col">
                         <div class="input-group">
@@ -45,7 +42,7 @@
                         <div class="input-group">
                             <label class="input-group-text" for="unitSelect">Unit</label>
                             <select class="form-select" id="unitSelect" name="unitId">
-                                <option value="0"></option>
+                                <option value=0></option>
                                 <option th:each="unit : ${units}" th:text="${unit.name}" th:value="${unit.id}"></option>
                             </select>
                         </div>
@@ -54,17 +51,18 @@
                         <div class="input-group">
                             <label class="input-group-text" for="ingredientSelect">Ingredient</i></label>
                             <select class="form-select" id="ingredientSelect" name="ingredientId">
+                                <option></option>
                                 <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"></option>
                             </select>
                             <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#newIngredientModal">New</button>
                         </div>
                     </div>
                     <div class="col">
-                        <input class="btn btn-primary" type="submit" value="Add" />
+                        <button class="btn btn-primary" type="submit">Add</button>
                     </div>
                 </div>
+            <p th:each="err : ${#fields.allErrors()}" th:text="${err}" class="alert alert-danger"></p>
             </form>
-            <span th:errors="${ingredient.name}" class="text-danger"></span>
         </div>
 
         <div class="container py-3">

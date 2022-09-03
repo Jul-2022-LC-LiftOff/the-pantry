@@ -89,13 +89,35 @@ public class RecipeController {
 
 
     @PostMapping("edit/update-recipe")
-    public String updateRecipe(@ModelAttribute Recipe recipe, Model model, @RequestParam int recipeId, Errors errors) {
-        if (errors.hasErrors()) {
-            return "recipes/edit/" + recipeId;
-        }
+    public String updateRecipe(@ModelAttribute Recipe recipe, @ModelAttribute @Valid RecipeIngredient newRecipeIngredient, Errors errors, @RequestParam int recipeId, @RequestParam String amount, @RequestParam int unitId, @RequestParam int ingredientId) {
+        // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
-        return "redirect:" + recipeId;
+
+        if (errors.hasErrors()) {
+            return "redirect:" + recipeId + "#ingredients";
+        }
+
+        // save recipe ingredient
+        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+        if(optRecipe.isPresent()) {
+            Recipe recipeSelected = optRecipe.get();
+            newRecipeIngredient.setRecipe(recipeSelected);
+        }
+        Optional<Unit> optUnit = unitRepository.findById(unitId);
+        if(optUnit.isPresent()) {
+            Unit unit = optUnit.get();
+            newRecipeIngredient.setUnit(unit);
+        }
+        Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
+        if(optIngredient.isPresent()) {
+            Ingredient ingredient = optIngredient.get();
+            newRecipeIngredient.setIngredient(ingredient);
+        }
+        newRecipeIngredient.setAmount(amount);
+
+        recipeIngredientRepository.save(newRecipeIngredient);
+        return "redirect:" + recipeId + "#ingredients";
     }
 
 
