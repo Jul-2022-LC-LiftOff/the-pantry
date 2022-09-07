@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,6 +35,8 @@ public class RecipeController {
 
     @Autowired
     private UnitRepository unitRepository;
+
+    private final String UPLOAD_DIR = "./uploads/";
 
     // display/add/delete/edit/save recipe
 
@@ -77,28 +80,34 @@ public class RecipeController {
     }
 
     @PostMapping("edit/save-recipe")
-    public String saveRecipe(@ModelAttribute Recipe recipe, @RequestParam int recipeId, Errors errors) {
+    public String saveRecipe(@ModelAttribute Recipe recipe, @RequestParam int recipeId, Model model, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
-            return "recipes/edit/" + recipeId;
+            return "redirect:" + recipeId + "#errors";
         }
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
         return "redirect:" + recipeId;
     }
 
+    // add/delete recipe ingredients
 
-
-    @PostMapping("edit/update-recipe")
-    public String updateRecipe(@ModelAttribute Recipe recipe, @ModelAttribute @Valid RecipeIngredient newRecipeIngredient, Errors errors, @RequestParam int recipeId, @RequestParam String amount, @RequestParam int unitId, @RequestParam int ingredientId) {
+    @PostMapping("edit/add-ingredient")
+    public String updateRecipe(@ModelAttribute Recipe recipe, @ModelAttribute RecipeIngredient newRecipeIngredient, @RequestParam String amount, @RequestParam int ingredientId, @RequestParam int recipeId, @RequestParam int unitId, Errors errors, RedirectAttributes ra) {
         // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
 
-        if (errors.hasErrors()) {
-            return "redirect:" + recipeId + "#ingredients";
+        // error checking
+        if (ingredientId==0) {
+            ra.addFlashAttribute("ingredientError", "Ingredient is required.");
+            return "redirect:" + recipeId + "#errors";
+        }
+        if (!recipeIngredientRepository.findByRecipeIdAndIngredientId(recipeId, ingredientId).isEmpty()) {
+            ra.addFlashAttribute("ingredientError", "Ingredient already exists.");
+            return "redirect:" + recipeId + "#errors";
         }
 
-        // save recipe ingredient
+        // set recipe ingredient
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
         if(optRecipe.isPresent()) {
             Recipe recipeSelected = optRecipe.get();
@@ -116,37 +125,7 @@ public class RecipeController {
         }
         newRecipeIngredient.setAmount(amount);
 
-        recipeIngredientRepository.save(newRecipeIngredient);
-        return "redirect:" + recipeId + "#ingredients";
-    }
-
-
-
-
-    // add/delete recipe ingredients
-
-    @PostMapping("edit/add-ingredient")
-    public String addRecipeIngredient(@ModelAttribute @Valid RecipeIngredient newRecipeIngredient,
-                                      Errors errors, Model model, @RequestParam String amount, @RequestParam int recipeId, @RequestParam int unitId, @RequestParam int ingredientId) {
-        if (errors.hasErrors()) {
-            return "redirect:" + recipeId + "#ingredients";
-        }
-        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
-        if(optRecipe.isPresent()) {
-            Recipe recipe = optRecipe.get();
-            newRecipeIngredient.setRecipe(recipe);
-        }
-        Optional<Unit> optUnit = unitRepository.findById(unitId);
-        if(optUnit.isPresent()) {
-            Unit unit = optUnit.get();
-            newRecipeIngredient.setUnit(unit);
-        }
-        Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
-        if(optIngredient.isPresent()) {
-            Ingredient ingredient = optIngredient.get();
-            newRecipeIngredient.setIngredient(ingredient);
-        }
-        newRecipeIngredient.setAmount(amount);
+        // save ingredient
         recipeIngredientRepository.save(newRecipeIngredient);
         return "redirect:" + recipeId + "#ingredients";
     }
@@ -160,12 +139,18 @@ public class RecipeController {
     // add new ingredient to list of ingredients
 
     @PostMapping("edit/new-ingredient")
-    public String newIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, @RequestParam int recipeId) {
+    public String newIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, @RequestParam int recipeId, RedirectAttributes ra) {
+        // error checking
         if (errors.hasErrors()) {
-            model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
-            model.addAttribute("errors", "Name is required.");
-            return "ingredients/index";
+            ra.addFlashAttribute("ingredientError", "Ingredient name is required.");
+            return "redirect:" + recipeId + "#errors";
         }
+        if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
+            ra.addFlashAttribute("ingredientError", "Ingredient '" + newIngredient.getName() + "' already exists.");
+            return "redirect:" + recipeId + "#errors";
+        }
+
+        // save new ingredient
         ingredientRepository.save(newIngredient);
         return "redirect:" + recipeId + "#ingredients";
     }

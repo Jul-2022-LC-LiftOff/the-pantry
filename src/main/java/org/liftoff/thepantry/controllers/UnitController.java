@@ -7,7 +7,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -20,19 +24,24 @@ public class UnitController {
 
     @GetMapping("")
     public String index(Model model) {
-        model.addAttribute("title", "Units");
         model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new Unit());
         return "units/index";
     }
 
     @PostMapping("add")
-    public String addUnit(@ModelAttribute @Valid Unit newUnit, Errors errors, Model model) {
+    public String addIngredient(@ModelAttribute @Valid Unit newUnit, Errors errors, Model model, RedirectAttributes ra) {
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Units");
             model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+            model.addAttribute("errors", errors);
             return "units/index";
         }
+
+        if (!unitRepository.findByName(newUnit.getName()).isEmpty()) {
+            ra.addFlashAttribute("ingredientError", "Ingredient '" + newUnit.getName() + "' already exists.");
+            return "redirect:/ingredients";
+        }
+
         unitRepository.save(newUnit);
         return "redirect:";
     }

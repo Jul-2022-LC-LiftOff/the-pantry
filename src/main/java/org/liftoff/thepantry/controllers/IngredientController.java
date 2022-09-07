@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -26,12 +27,18 @@ public class IngredientController {
     }
 
     @PostMapping("add")
-    public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model) {
+    public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             model.addAttribute("errors", errors);
             return "ingredients/index";
         }
+
+        if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
+            ra.addFlashAttribute("ingredientError", "Ingredient '" + newIngredient.getName() + "' already exists.");
+            return "redirect:/ingredients";
+        }
+
         ingredientRepository.save(newIngredient);
         return "redirect:";
     }

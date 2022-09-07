@@ -20,11 +20,16 @@
         </form>
     </div>
     <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
+    <p th:if="${ingredientError}" th:text="${ingredientError}" class="alert alert-danger"></p>
 
     <div class="container py-3">
         <ul class="list-group">
             <li class="list-group-item" th:each="ingredient, rowStat : ${ingredients}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                 <span th:text="${ingredient.name}"></span>
+                <form method="post" action="delete" class="d-inline">
+                    <input type="hidden" name="ingredientId" th:value="${ingredient.id}" />
+                    <button type="button" class="btn btn-link" style="padding: 2px;"><i class="bi bi-trash text-primary"></i></button>
+                </form>
             </li>
         </ul>
     </div>

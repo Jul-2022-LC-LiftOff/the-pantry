@@ -10,12 +10,11 @@
         <h1>Edit Recipe</h1>
 
         <div class="container py-3">
-            <form method="post" action="update-recipe">
+            <form method="post">
                 <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Name</span>
                     <input class="form-control" th:field="${recipe.name}" />
-                    <p th:errors="${recipe.name}" class="alert alert-danger"></p>
                 </div>
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Description</span>
@@ -25,9 +24,13 @@
                     <span class="input-group-text w-25">Instructions</span>
                     <textarea class="form-control" th:field="${recipe.instructions}" rows ="6"></textarea>
                 </div>
-                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-primary" type="submit" formaction="save-recipe">Save</button>
 
         </div>
+
+        <a id="errors"></a>
+        <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
+        <p th:if="${ingredientError}" th:text="${ingredientError}" class="alert alert-danger"></p>
 
         <div class="container py-3">
             <h3>Ingredients</h3>
@@ -51,17 +54,16 @@
                         <div class="input-group">
                             <label class="input-group-text" for="ingredientSelect">Ingredient</i></label>
                             <select class="form-select" id="ingredientSelect" name="ingredientId">
-                                <option></option>
+                                <option value=0></option>
                                 <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.id}"></option>
                             </select>
                             <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#newIngredientModal">New</button>
                         </div>
                     </div>
                     <div class="col">
-                        <button class="btn btn-primary" type="submit">Add</button>
+                        <button class="btn btn-primary" type="submit" formaction="add-ingredient">Add</button>
                     </div>
                 </div>
-            <p th:each="err : ${#fields.allErrors()}" th:text="${err}" class="alert alert-danger"></p>
             </form>
         </div>
 
@@ -104,7 +106,7 @@
                                 <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                                 <div class="input-group">
                                     <span class="input-group-text">Name</span>
-                                    <input class="form-control" th:field="${ingredient.name}" />
+                                    <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
                                 </div>
                             </form>
                         </div>
