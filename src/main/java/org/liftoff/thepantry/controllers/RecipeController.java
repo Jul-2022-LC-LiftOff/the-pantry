@@ -36,7 +36,7 @@ public class RecipeController {
     @Autowired
     private UnitRepository unitRepository;
 
-    private final String UPLOAD_DIR = "./uploads/";
+    private static String UPLOAD_FOLDER = "/uploads";
 
     // display/add/delete/edit/save recipe
 
@@ -154,5 +154,8 @@ public class RecipeController {
         ingredientRepository.save(newIngredient);
         return "redirect:" + recipeId + "#ingredients";
     }
+
+    // upload image file
+
 
 }

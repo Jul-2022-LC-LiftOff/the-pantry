@@ -25,6 +25,7 @@
                     <textarea class="form-control" th:field="${recipe.instructions}" rows ="6"></textarea>
                 </div>
                 <button class="btn btn-primary" type="submit" formaction="save-recipe">Save</button>
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload Image</button>
 
         </div>
 
@@ -92,7 +93,7 @@
         </div>
         <a id="ingredients"></a>
 
-        <!-- Modal -->
+        <!-- New Ingredient Modal -->
         <div class="modal fade" id="newIngredientModal" tabindex="-1" aria-labelledby="newIngredientModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -114,6 +115,31 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" form="newIngredient" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Modal -->
+        <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadModalLabel">Upload Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <form method="post" id="upload" th:action="@{upload}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="file" name="image" accept="image/*" class="form-control-file">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="upload" class="btn btn-primary">Upload</button>
                     </div>
                 </div>
             </div>
