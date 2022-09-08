@@ -30,17 +30,21 @@ public class IngredientController {
     public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
-            model.addAttribute("errors", errors);
-            return "ingredients/index";
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Name is required.");
+            return "redirect:/ingredients/";
         }
 
         if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
-            ra.addFlashAttribute("ingredientError", "Ingredient '" + newIngredient.getName() + "' already exists.");
-            return "redirect:/ingredients";
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' already exists.");
+            return "redirect:/ingredients/";
         }
 
         ingredientRepository.save(newIngredient);
-        return "redirect:";
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' added successfully.");
+        return "redirect:/ingredients/";
     }
 
     @PostMapping("delete")

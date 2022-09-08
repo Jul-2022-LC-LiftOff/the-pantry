@@ -33,17 +33,21 @@ public class UnitController {
     public String addIngredient(@ModelAttribute @Valid Unit newUnit, Errors errors, Model model, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
-            model.addAttribute("errors", errors);
-            return "units/index";
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Name is required.");
+            return "redirect:/units/";
         }
 
         if (!unitRepository.findByName(newUnit.getName()).isEmpty()) {
-            ra.addFlashAttribute("ingredientError", "Ingredient '" + newUnit.getName() + "' already exists.");
-            return "redirect:/ingredients";
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Unit '" + newUnit.getName() + "' already exists.");
+            return "redirect:/units/";
         }
 
         unitRepository.save(newUnit);
-        return "redirect:";
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Unit '" + newUnit.getName() + "' added successfully.");
+        return "redirect:/units/";
     }
 
 }

@@ -20,8 +20,10 @@
                 </div>
             </form>
         </div>
-        <p th:errors="${recipe.name}" class="alert alert-danger"></p>
+
         <p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
+        <p th:errors="${recipe.name}" class="alert alert-danger"></p>
+        <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
 
         <div class="container">
             <ul class="list-group">

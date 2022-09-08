@@ -21,7 +21,7 @@
     </div>
 
     <p th:errors="${unit.name}" class="alert alert-danger"></p>
-    <p th:text="${unitError}" th:if="${unitError}" class="alert alert-danger"></p>
+    <p th:text="${message}" th:if="${message}" th:class="${class}"></p>
 
     <div class="container py-3">
         <ul class="list-group">

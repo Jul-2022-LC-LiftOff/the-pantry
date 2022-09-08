@@ -20,7 +20,7 @@
         </form>
     </div>
     <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
-    <p th:if="${ingredientError}" th:text="${ingredientError}" class="alert alert-danger"></p>
+    <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
 
     <div class="container py-3">
         <ul class="list-group">

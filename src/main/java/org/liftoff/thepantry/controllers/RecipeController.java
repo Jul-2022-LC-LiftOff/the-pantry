@@ -59,11 +59,20 @@ public class RecipeController {
     }
 
     @PostMapping("delete-recipe")
-    public String deleteRecipe(@RequestParam int recipeId) {
+    public String deleteRecipe(@RequestParam int recipeId, RedirectAttributes ra) {
+        Optional optRecipe = recipeRepository.findById(recipeId);
+        Recipe recipe = (Recipe) optRecipe.get();
+
+        // delete recipe ingredients
         List recipeIngredients = recipeIngredientRepository.findByRecipeId(recipeId);
         recipeIngredientRepository.deleteAll(recipeIngredients);
+
+        // delete recipe
         recipeRepository.deleteById(recipeId);
-        return "redirect:";
+
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' deleted successfully");
+        return "redirect:/recipes";
     }
 
     @GetMapping("edit/{recipeId}")
@@ -84,26 +93,34 @@ public class RecipeController {
         if (errors.hasErrors()) {
             return "redirect:" + recipeId + "#errors";
         }
+
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
+
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' saved successfully");
         return "redirect:" + recipeId;
     }
 
     // add/delete recipe ingredients
 
     @PostMapping("edit/add-ingredient")
-    public String updateRecipe(@ModelAttribute Recipe recipe, @ModelAttribute RecipeIngredient newRecipeIngredient, @RequestParam String amount, @RequestParam int ingredientId, @RequestParam int recipeId, @RequestParam int unitId, Errors errors, RedirectAttributes ra) {
+    public String updateRecipe(@ModelAttribute Recipe recipe, @ModelAttribute RecipeIngredient newRecipeIngredient, @RequestParam String amount, @RequestParam int ingredientId, @RequestParam int recipeId, @RequestParam int unitId, Errors errors, Model model, RedirectAttributes ra) {
         // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
 
         // error checking
         if (ingredientId==0) {
-            ra.addFlashAttribute("ingredientError", "Ingredient is required.");
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient is required.");
             return "redirect:" + recipeId + "#errors";
         }
         if (!recipeIngredientRepository.findByRecipeIdAndIngredientId(recipeId, ingredientId).isEmpty()) {
-            ra.addFlashAttribute("ingredientError", "Ingredient already exists.");
+            Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
+            Ingredient ingredient = optIngredient.get();
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient '" + optIngredient.get().getName() + "' already exists.");
             return "redirect:" + recipeId + "#errors";
         }
 
@@ -127,12 +144,20 @@ public class RecipeController {
 
         // save ingredient
         recipeIngredientRepository.save(newRecipeIngredient);
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Ingredient '" + optIngredient.get().getName() + "' added successfully.");
         return "redirect:" + recipeId + "#ingredients";
     }
 
     @PostMapping("edit/delete-ingredient")
-    public String deleteRecipeIngredient(@RequestParam int recipeId, @RequestParam int recipeIngredientId) {
+    public String deleteRecipeIngredient(@RequestParam int recipeId, @RequestParam int recipeIngredientId, RedirectAttributes ra) {
+        Optional<RecipeIngredient> optRecipeIngredient = recipeIngredientRepository.findById(recipeIngredientId);
+        RecipeIngredient recipeIngredient = optRecipeIngredient.get();
+
         recipeIngredientRepository.deleteById(recipeIngredientId);
+
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Recipe ingredient '" + recipeIngredient.getIngredient().getName() + "' deleted successfully");
         return "redirect:" + recipeId + "#ingredients";
     }
 
@@ -142,16 +167,21 @@ public class RecipeController {
     public String newIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, @RequestParam int recipeId, RedirectAttributes ra) {
         // error checking
         if (errors.hasErrors()) {
-            ra.addFlashAttribute("ingredientError", "Ingredient name is required.");
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient name is required to add new.");
             return "redirect:" + recipeId + "#errors";
         }
         if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
-            ra.addFlashAttribute("ingredientError", "Ingredient '" + newIngredient.getName() + "' already exists.");
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' already exists.");
             return "redirect:" + recipeId + "#errors";
         }
 
         // save new ingredient
         ingredientRepository.save(newIngredient);
+
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' added successfully.");
         return "redirect:" + recipeId + "#ingredients";
     }
 
