@@ -98,7 +98,7 @@ public class RecipeController {
         recipeRepository.save(recipe);
 
         ra.addFlashAttribute("class", "alert alert-success");
-        ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' saved successfully");
+        ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' updated successfully");
         return "redirect:" + recipeId;
     }
 
@@ -120,7 +120,7 @@ public class RecipeController {
             Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
             Ingredient ingredient = optIngredient.get();
             ra.addFlashAttribute("class", "alert alert-danger");
-            ra.addFlashAttribute("message", "Ingredient '" + optIngredient.get().getName() + "' already exists.");
+            ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' already exists.");
             return "redirect:" + recipeId + "#errors";
         }
 
@@ -145,7 +145,7 @@ public class RecipeController {
         // save ingredient
         recipeIngredientRepository.save(newRecipeIngredient);
         ra.addFlashAttribute("class", "alert alert-success");
-        ra.addFlashAttribute("message", "Ingredient '" + optIngredient.get().getName() + "' added successfully.");
+        ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' added successfully.");
         return "redirect:" + recipeId + "#ingredients";
     }
 
@@ -168,7 +168,7 @@ public class RecipeController {
         // error checking
         if (errors.hasErrors()) {
             ra.addFlashAttribute("class", "alert alert-danger");
-            ra.addFlashAttribute("message", "Ingredient name is required to add new.");
+            ra.addFlashAttribute("message", "Name is required for new ingredient.");
             return "redirect:" + recipeId + "#errors";
         }
         if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {

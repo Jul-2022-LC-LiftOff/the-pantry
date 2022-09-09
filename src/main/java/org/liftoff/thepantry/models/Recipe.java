@@ -14,7 +14,7 @@ public class Recipe extends AbstractEntity {
     private String instructions;
 
     @OneToOne
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "id")
     private RecipeIngredient recipeIngredient;
 
     public Recipe() {

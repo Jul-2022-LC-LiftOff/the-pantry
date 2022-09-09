@@ -18,6 +18,7 @@ public class RecipeIngredient {
     private Unit unit;
 
     @OneToOne
+    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     private Recipe recipe;
 
     public RecipeIngredient() {

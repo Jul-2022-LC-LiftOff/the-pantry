@@ -7,7 +7,7 @@
 
     <div class="container body-content py-3">
 
-        <h1>Recipes <i class="bi bi-plus-circle-fill text-primary" role="button" data-bs-toggle="modal" data-bs-target="#addModal"></i></h1>
+        <h1>Recipes</h1>
 
         <div class="container py-3">
             <form method="post" action="add-recipe">
@@ -48,32 +48,6 @@
                     </div>
                 </li>
             </ul>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Add Recipe</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <form action="add-recipe" method="post" id="add" th:object="${recipe}">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Name</span>
-                                        <input class="form-control" th:field="*{name}" />
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="add" class="btn btn-primary">Next</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
