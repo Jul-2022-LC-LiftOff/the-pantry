@@ -2,6 +2,9 @@ package org.liftoff.thepantry.data;
 
 public class SearchDTO {
 
+   private String ingredients;
+
+
     public String getIngredients() {
         return ingredients;
     }
@@ -10,7 +13,6 @@ public class SearchDTO {
         this.ingredients = ingredients;
     }
 
-    private String ingredients;
 
 
 }

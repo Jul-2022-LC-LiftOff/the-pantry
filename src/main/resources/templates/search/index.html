@@ -1,59 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
-<head th:replace="fragments :: head"></head>
-<body class="container body-content">
 
+<head th:replace="fragments :: head">
+
+
+
+</head>
+
+<body class="container body-content">
 <script>
     function addIngredient() {
         selIngTextArea = document.getElementById("selectedIngredients");
         searchIng = document.getElementById("searchingredients");
-        selIngTextArea.value =  document.getElementById("ingredientSelect").value + "\n" + selIngTextArea.value;
-        searchIng.value =  document.getElementById("ingredientSelect").value + "~~~" + searchIng.value;
+        selIngTextArea.value =  document.getElementById("ingredient_select").value + "\n" + selIngTextArea.value;
+        searchIng.value =  document.getElementById("searchingredients").value + "~~~" + document.getElementsByName("ingredient_select")[0].value;
+        document.getElementById("ingredient_select").value = "";
         return;
     }
 </script>
 
 <nav th:replace="fragments :: page-header"></nav>
 
+<div class="form-group">
 <table>
     <tr>
         <td>
-            <div class="form-group">
-                <table>
-                    <tr>
-                        <th> Type of cooking</th>
-                    </tr>
-
-                    <th:block th:each="tag:${tags}">
-                        <tr>
-                            <td><span th:text="${tag}"></span></td>
-                            <td><input type="checkbox" name="tags" th:value="${tag}" class="form-group"></td>
-                        </tr>
-                    </th:block>
-
-                </table>
-            </div>
+            <label th:for="Ingredients">Ingredient</label>
         </td>
         <td>
-            <div class="form-group">
-                <table>
-                    <tr><td>
-                        <label th:for="Ingredients">Name</label>
-                        <select id="ingredientSelect">
-                            <option th:each="ingredient : ${ingredients}" th:text="${ingredient.name}" th:value="${ingredient.name}"></option>
-                        </select>
-                        <input class="btn btn-primary" type="button" onclick="addIngredient()"  value="Add" />
-                    </td></tr>
-                    <tr><td>
-                <textarea id="selectedIngredients">
-
-                </textarea>
-                    </td></tr>
-                </table>
-            </div>
+            <select class="form-control basicAutoSelect" id="ingredient_select" name="ingredient_select"
+                    placeholder="type to search..."
+                    data-url="/search/filter/"
+                    data-noresults-text="No ingredients found."
+                    autocomplete="off"></select>
+        </td>
+        <td>
+            <input class="btn btn-primary" type="button" onclick="addIngredient()"  value="Add" />
         </td>
     </tr>
-    </table>
+    <tr>
+        <td colspan="3">
+ <textarea class="form-control" id="selectedIngredients">
+                </textarea>
+        </td>
+    </tr>
+
+</table>
+</div>
 
 <form method="post" action="list">
     <input type="hidden" id="searchingredients" th:field="${searchDTO.ingredients}"/>
@@ -61,5 +54,12 @@
 </form>
 
 
+<script language="JavaScript">
+
+    $(document).ready(function(){
+          $('.basicAutoSelect').autoComplete();
+    })
+
+    </script>
 </body>
 </html>

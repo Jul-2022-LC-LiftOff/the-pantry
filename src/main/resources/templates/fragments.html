@@ -4,9 +4,17 @@
 <head th:fragment="head">
 
     <!-- Bootstrap stylesheets and script -->
+
+
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+
     <link th:href="@{/css/style.css}" rel="stylesheet" />
-    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.js"></script>
+
 
     <title th:text="'The Pantry' + ${title == null ? '' : ' :: ' + title}">The Pantry</title>
 </head>
