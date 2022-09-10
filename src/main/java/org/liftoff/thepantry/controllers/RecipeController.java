@@ -12,11 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +98,7 @@ public class RecipeController {
     @PostMapping("edit/save-recipe")
     public String saveRecipe(@ModelAttribute Recipe recipe, @RequestParam int recipeId, Model model, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
-            return "redirect:" + recipeId + "#errors";
+            return "redirect:" + recipeId + "#message";
         }
 
         recipe.setId(recipeId);
@@ -99,7 +106,7 @@ public class RecipeController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' updated successfully");
-        return "redirect:" + recipeId;
+        return "redirect:" + recipeId + "#message";
     }
 
     // add/delete recipe ingredients
@@ -114,14 +121,14 @@ public class RecipeController {
         if (ingredientId==0) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient is required.");
-            return "redirect:" + recipeId + "#errors";
+            return "redirect:" + recipeId + "#message";
         }
         if (!recipeIngredientRepository.findByRecipeIdAndIngredientId(recipeId, ingredientId).isEmpty()) {
             Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
             Ingredient ingredient = optIngredient.get();
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' already exists.");
-            return "redirect:" + recipeId + "#errors";
+            return "redirect:" + recipeId + "#message";
         }
 
         // set recipe ingredient
@@ -169,12 +176,12 @@ public class RecipeController {
         if (errors.hasErrors()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required for new ingredient.");
-            return "redirect:" + recipeId + "#errors";
+            return "redirect:" + recipeId + "#message";
         }
         if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' already exists.");
-            return "redirect:" + recipeId + "#errors";
+            return "redirect:" + recipeId + "#message";
         }
 
         // save new ingredient
@@ -186,6 +193,72 @@ public class RecipeController {
     }
 
     // upload image file
+
+    @PostMapping("edit/upload-image")
+    public String uploadImage(@RequestParam int recipeId, @RequestParam("image") MultipartFile image, RedirectAttributes ra) {
+//        if (errors.hasErrors()) {
+//            return "redirect:" + recipeId + "#errors";
+//        }
+        if (image.isEmpty()) {
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Please select an image to upload.");
+            return "redirect:" + recipeId + "#errors";
+        }
+
+        // normalize the file path
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+
+        try {
+            Path path = Paths.get("./src/main/resources/static/images/" + fileName);
+            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+        if(optRecipe.isPresent()) {
+            Recipe recipe = optRecipe.get();
+            recipe.setImage(fileName);
+            recipeRepository.save(recipe);
+        }
+
+//        recipe.setId(recipeId);
+//        recipeRepository.save(recipe);
+
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Image '" + fileName + "' uploaded successfully.");
+        return "redirect:" + recipeId;
+    }
+
+//    @PostMapping("edit/upload-image")
+//    public String uploadImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, @RequestParam("image") MultipartFile image, Errors errors, RedirectAttributes ra) {
+////        if (errors.hasErrors()) {
+////            return "redirect:" + recipeId + "#errors";
+////        }
+//        if (image.isEmpty()) {
+//            ra.addFlashAttribute("class", "alert alert-danger");
+//            ra.addFlashAttribute("message", "Please select an image to upload.");
+//            return "redirect:" + recipeId + "#message";
+//        }
+//
+//        // normalize the file path
+//        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+//
+//        try {
+//            Path path = Paths.get("./src/main/resources/static/images/" + fileName);
+//            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        recipe.setId(recipeId);
+//        recipe.setImage(fileName);
+//        recipeRepository.save(recipe);
+//
+//        ra.addFlashAttribute("class", "alert alert-success");
+//        ra.addFlashAttribute("message", "Image '" + fileName + "' uploaded successfully.");
+//        return "redirect:" + recipeId + "#message";
+//    }
 
 
 }

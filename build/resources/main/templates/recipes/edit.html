@@ -12,6 +12,7 @@
         <div class="container py-3">
             <form method="post">
                 <input type="hidden" name="recipeId" th:value="${recipe.id}" />
+                <input type="hidden" class="form-control" th:field="${recipe.image}" />
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Name</span>
                     <input class="form-control" th:field="${recipe.name}" />
@@ -24,12 +25,28 @@
                     <span class="input-group-text w-25">Instructions</span>
                     <textarea class="form-control" th:field="${recipe.instructions}" rows ="6"></textarea>
                 </div>
-                <button class="btn btn-primary" type="submit" formaction="save-recipe">Save</button>
-                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload Image</button>
 
+
+                <!--
+                <div class="input-group mb-2">
+                    <span class="input-group-text w-25">Image</span>
+                    <input type="file" name="image" class="form-control" />
+                    <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="submit" formaction="upload-image" formenctype="multipart/form-data">Upload Image</button>
+                </div>
+                -->
+
+
+                <button class="btn btn-primary" type="submit" formaction="save-recipe">Save Recipe</button>
+                <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload Image</button>
+                <button th:hidden="${recipe.image == null}" class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Delete Image</button>
+
+                <p>
+                    <h5 th:text="${recipe.image}"></h5>
+                    <img th:if="${recipe.image != null}" th:src="@{'/images/' + ${recipe.image}}"  class="img-thumbnail w-25">
+                </p>
         </div>
 
-        <a id="errors"></a>
+        <a id="message"></a>
         <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
         <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
 
@@ -130,9 +147,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <form method="post" id="upload" th:action="@{upload}" enctype="multipart/form-data">
+                            <form method="post" id="upload" th:action="upload-image" enctype="multipart/form-data">
+                                <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                                 <div class="form-group">
-                                    <input type="file" name="image" accept="image/*" class="form-control-file">
+                                    <input type="file" name="image" class="form-control">
                                 </div>
                             </form>
                         </div>

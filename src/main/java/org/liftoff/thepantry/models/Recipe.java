@@ -3,15 +3,18 @@ package org.liftoff.thepantry.models;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Recipe extends AbstractEntity {
 
-    //@NotBlank
+    @Size(max = 500)
     private String description;
 
-    //@NotBlank
+    @Size(max = 2500)
     private String instructions;
+
+    private String image;
 
     @OneToOne
     @JoinColumn(name = "id")
@@ -42,6 +45,14 @@ public class Recipe extends AbstractEntity {
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }
