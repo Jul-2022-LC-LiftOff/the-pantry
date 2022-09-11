@@ -28,7 +28,7 @@
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Image</span>
                     <input th:hidden="${recipe.image != null}" type="file" name="file" class="form-control" />
-                    <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="submit" formaction="upload" formenctype="multipart/form-data">Upload Image</button>
+                    <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="submit" formaction="upload-image" formenctype="multipart/form-data">Upload Image</button>
                     <div th:hidden="${recipe.image == null}" class="form-control vstack gap-1">
                         <img th:hidden="${recipe.image == null}" th:src="@{'/images/' + ${recipe.image}}" class="img-thumbnail w-25">
                         <button th:hidden="${recipe.image == null}" class="btn btn-outline-danger w-25" type="button" data-bs-toggle="modal" data-bs-target="#deleteImageModal">Delete Image</button>
@@ -99,7 +99,6 @@
                 </li>
             </ul>
         </div>
-        <a id="ingredients"></a>
 
         <!-- New Ingredient Modal -->
         <div class="modal fade" id="newIngredientModal" tabindex="-1" aria-labelledby="newIngredientModalLabel" aria-hidden="true">
@@ -128,7 +127,7 @@
             </div>
         </div>
 
-        <!-- Upload Modal -->
+        <!-- Delete Image Modal -->
         <div class="modal fade" id="deleteImageModal" tabindex="-1" aria-labelledby="deleteImageModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

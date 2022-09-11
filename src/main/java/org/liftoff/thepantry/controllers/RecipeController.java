@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -72,6 +73,10 @@ public class RecipeController {
         // delete recipe ingredients
         List recipeIngredients = recipeIngredientRepository.findByRecipeId(recipeId);
         recipeIngredientRepository.deleteAll(recipeIngredients);
+
+        // delete image
+        File file = new File("./src/main/resources/static/images/" + recipe.getImage());
+        file.delete();
 
         // delete recipe
         recipeRepository.deleteById(recipeId);
@@ -152,7 +157,7 @@ public class RecipeController {
         recipeIngredientRepository.save(newRecipeIngredient);
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' added successfully.");
-        return "redirect:" + recipeId + "#ingredients";
+        return "redirect:" + recipeId + "#message";
     }
 
     @PostMapping("edit/delete-ingredient")
@@ -164,7 +169,7 @@ public class RecipeController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Recipe ingredient '" + recipeIngredient.getIngredient().getName() + "' deleted successfully");
-        return "redirect:" + recipeId + "#ingredients";
+        return "redirect:" + recipeId + "#message";
     }
 
     // add new ingredient to list of ingredients
@@ -188,30 +193,37 @@ public class RecipeController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' added successfully.");
-        return "redirect:" + recipeId + "#ingredients";
+        return "redirect:" + recipeId + "#message";
     }
 
     // upload image file
 
-    @PostMapping("edit/upload")
-    public String uploadImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, @RequestParam("file") MultipartFile file, RedirectAttributes ra) {
-//        if (errors.hasErrors()) {
-//            return "redirect:" + recipeId + "#errors";
-//        }
+    @PostMapping("edit/upload-image")
+    public String uploadImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, @RequestParam("file") MultipartFile file, RedirectAttributes ra, Exception exception)  {
+        recipe.setId(recipeId);
+        recipeRepository.save(recipe);
+
         if (file.isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Please select an image to upload.");
             return "redirect:" + recipeId + "#message";
         }
 
-        recipe.setId(recipeId);
-        recipeRepository.save(recipe);
+        if (exception instanceof MaxUploadSizeExceededException) {
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Max file size exceeded.");
+            return "redirect:" + recipeId + "#message";
+        }
 
         // normalize the file path
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
-            Path path = Paths.get("./src/main/resources/static/images/" + fileName);
+            Path pathToImages = Paths.get("./src/main/resources/static/images");
+            if (!Files.exists(pathToImages)) {
+                Files.createDirectory(pathToImages);
+            }
+            Path path = Paths.get(pathToImages + "/" + fileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
@@ -239,11 +251,12 @@ public class RecipeController {
             File file = new File("./src/main/resources/static/images/" + recipe.getImage());
             file.delete();
             recipe.setImage(null);
+            recipeRepository.save(recipe);
             ra.addFlashAttribute("class", "alert alert-success");
             ra.addFlashAttribute("message", "Image deleted successfully.");
         }  catch(Exception e)  {
             ra.addFlashAttribute("class", "alert alert-danger");
-            ra.addFlashAttribute("message", "Image deleted failed.");
+            ra.addFlashAttribute("message", "Image delete failed.");
         }
         return "redirect:" + recipeId + "#message";
     }
