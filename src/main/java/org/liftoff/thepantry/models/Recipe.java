@@ -23,10 +23,11 @@ public class Recipe extends AbstractEntity {
     public Recipe() {
     }
 
-    public Recipe(String description, String instructions) {
+    public Recipe(String description, String instructions, String image) {
         super();
         this.description = description;
         this.instructions = instructions;
+        this.image = image;
     }
 
     // getters and setters
@@ -52,6 +53,9 @@ public class Recipe extends AbstractEntity {
     }
 
     public void setImage(String image) {
+        if (image != null && image.isEmpty()) {
+            image = null;
+        }
         this.image = image;
     }
 

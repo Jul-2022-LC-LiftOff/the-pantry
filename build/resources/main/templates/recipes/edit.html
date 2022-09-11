@@ -10,7 +10,7 @@
         <h1>Edit Recipe</h1>
 
         <div class="container py-3">
-            <form method="post">
+            <form method="post" id="edit">
                 <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                 <input type="hidden" class="form-control" th:field="${recipe.image}" />
                 <div class="input-group mb-2">
@@ -25,25 +25,16 @@
                     <span class="input-group-text w-25">Instructions</span>
                     <textarea class="form-control" th:field="${recipe.instructions}" rows ="6"></textarea>
                 </div>
-
-
-                <!--
                 <div class="input-group mb-2">
                     <span class="input-group-text w-25">Image</span>
-                    <input type="file" name="image" class="form-control" />
-                    <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="submit" formaction="upload-image" formenctype="multipart/form-data">Upload Image</button>
+                    <input th:hidden="${recipe.image != null}" type="file" name="file" class="form-control" />
+                    <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="submit" formaction="upload" formenctype="multipart/form-data">Upload Image</button>
+                    <div th:hidden="${recipe.image == null}" class="form-control vstack gap-1">
+                        <img th:hidden="${recipe.image == null}" th:src="@{'/images/' + ${recipe.image}}" class="img-thumbnail w-25">
+                        <button th:hidden="${recipe.image == null}" class="btn btn-outline-danger w-25" type="button" data-bs-toggle="modal" data-bs-target="#deleteImageModal">Delete Image</button>
+                    </div>
                 </div>
-                -->
-
-
                 <button class="btn btn-primary" type="submit" formaction="save-recipe">Save Recipe</button>
-                <button th:hidden="${recipe.image != null}" class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload Image</button>
-                <button th:hidden="${recipe.image == null}" class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Delete Image</button>
-
-                <p>
-                    <h5 th:text="${recipe.image}"></h5>
-                    <img th:if="${recipe.image != null}" th:src="@{'/images/' + ${recipe.image}}"  class="img-thumbnail w-25">
-                </p>
         </div>
 
         <a id="message"></a>
@@ -138,26 +129,13 @@
         </div>
 
         <!-- Upload Modal -->
-        <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteImageModal" tabindex="-1" aria-labelledby="deleteImageModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="uploadModalLabel">Upload Image</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body">
-                        <div class="container">
-                            <form method="post" id="upload" th:action="upload-image" enctype="multipart/form-data">
-                                <input type="hidden" name="recipeId" th:value="${recipe.id}" />
-                                <div class="form-group">
-                                    <input type="file" name="image" class="form-control">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
+                        <p>Are you sure you want to delete?</p>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="upload" class="btn btn-primary">Upload</button>
+                        <button class="btn btn-primary" type="submit" form="edit" formaction="delete-image">Delete</button>
                     </div>
                 </div>
             </div>

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,8 +43,6 @@ public class RecipeController {
 
     @Autowired
     private UnitRepository unitRepository;
-
-    private static String UPLOAD_FOLDER = "/uploads";
 
     // display/add/delete/edit/save recipe
 
@@ -79,7 +78,7 @@ public class RecipeController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' deleted successfully");
-        return "redirect:/recipes";
+        return "redirect:/recipes/";
     }
 
     @GetMapping("edit/{recipeId}")
@@ -194,71 +193,59 @@ public class RecipeController {
 
     // upload image file
 
-    @PostMapping("edit/upload-image")
-    public String uploadImage(@RequestParam int recipeId, @RequestParam("image") MultipartFile image, RedirectAttributes ra) {
+    @PostMapping("edit/upload")
+    public String uploadImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, @RequestParam("file") MultipartFile file, RedirectAttributes ra) {
 //        if (errors.hasErrors()) {
 //            return "redirect:" + recipeId + "#errors";
 //        }
-        if (image.isEmpty()) {
+        if (file.isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Please select an image to upload.");
-            return "redirect:" + recipeId + "#errors";
+            return "redirect:" + recipeId + "#message";
         }
 
+        recipe.setId(recipeId);
+        recipeRepository.save(recipe);
+
         // normalize the file path
-        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
             Path path = Paths.get("./src/main/resources/static/images/" + fileName);
-            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
-        if(optRecipe.isPresent()) {
-            Recipe recipe = optRecipe.get();
+        if(fileName!=null || fileName != "") {
             recipe.setImage(fileName);
             recipeRepository.save(recipe);
+            ra.addFlashAttribute("class", "alert alert-success");
+            ra.addFlashAttribute("message", "Image '" + fileName + "' uploaded successfully.");
+            return "redirect:" + recipeId + "#message";
         }
 
-//        recipe.setId(recipeId);
-//        recipeRepository.save(recipe);
-
         ra.addFlashAttribute("class", "alert alert-success");
-        ra.addFlashAttribute("message", "Image '" + fileName + "' uploaded successfully.");
-        return "redirect:" + recipeId;
+        ra.addFlashAttribute("message", "There was an issue with processing image.");
+        return "redirect:" + recipeId + "#message";
     }
 
-//    @PostMapping("edit/upload-image")
-//    public String uploadImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, @RequestParam("image") MultipartFile image, Errors errors, RedirectAttributes ra) {
-////        if (errors.hasErrors()) {
-////            return "redirect:" + recipeId + "#errors";
-////        }
-//        if (image.isEmpty()) {
-//            ra.addFlashAttribute("class", "alert alert-danger");
-//            ra.addFlashAttribute("message", "Please select an image to upload.");
-//            return "redirect:" + recipeId + "#message";
-//        }
-//
-//        // normalize the file path
-//        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-//
-//        try {
-//            Path path = Paths.get("./src/main/resources/static/images/" + fileName);
-//            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        recipe.setId(recipeId);
-//        recipe.setImage(fileName);
-//        recipeRepository.save(recipe);
-//
-//        ra.addFlashAttribute("class", "alert alert-success");
-//        ra.addFlashAttribute("message", "Image '" + fileName + "' uploaded successfully.");
-//        return "redirect:" + recipeId + "#message";
-//    }
+    @PostMapping("edit/delete-image")
+    public String deleteImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, RedirectAttributes ra) {
+        recipe.setId(recipeId);
+        recipeRepository.save(recipe);
 
+        try {
+            File file = new File("./src/main/resources/static/images/" + recipe.getImage());
+            file.delete();
+            recipe.setImage(null);
+            ra.addFlashAttribute("class", "alert alert-success");
+            ra.addFlashAttribute("message", "Image deleted successfully.");
+        }  catch(Exception e)  {
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Image deleted failed.");
+        }
+        return "redirect:" + recipeId + "#message";
+    }
 
 }
