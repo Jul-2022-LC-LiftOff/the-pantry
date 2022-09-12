@@ -1,2 +1,2 @@
 INSERT INTO unit (name) VALUES('can(s)'), ('cup(s)'), ('deciliter(s)'), ('fluid ounce(s)'), ('gallon(s)'), ('gill(s)'), ('gram(s)'), ('kilogram(s)'), ('liter(s)'), ('milligram(s)'), ('milliliter(s)'), ('ounce(s)'), ('pinch(es)'), ('pint(s)'), ('pound(s)'), ('quart(s)'), ('slice(s)'), ('tablespoon(s)'), ('teaspoon(s)');
-INSERT INTO ingredients (name) VALUES('bread'), ('butter'), ('cinnamon'), ('egg(s)'), ('flour'), ('milk'), ('oregano'), ('paprika'), ('pepper'), ('salt'), ('sugar');
+INSERT INTO ingredient (name) VALUES('bread'), ('butter'), ('cinnamon'), ('egg(s)'), ('flour'), ('milk'), ('olive oil'), ('oregano'), ('paprika'), ('pepper'), ('salt'), ('sugar'), ('vegetable oil');
