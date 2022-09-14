@@ -260,5 +260,4 @@ public class RecipeController {
         }
         return "redirect:" + recipeId + "#message";
     }
-
 }
