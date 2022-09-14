@@ -11,10 +11,12 @@ public class RecipeIngredient {
 
     private String amount;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
     private Ingredient ingredient;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 
     @OneToOne

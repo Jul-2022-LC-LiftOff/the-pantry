@@ -37,20 +37,22 @@ public class IngredientController {
 
     @PostMapping("add")
     public String addIngredient(@ModelAttribute @Valid Ingredient newIngredient, Errors errors, Model model, RedirectAttributes ra) {
+        // error checking
         if (errors.hasErrors()) {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required.");
             return "redirect:/ingredients/";
         }
-
         if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' already exists.");
             return "redirect:/ingredients/";
         }
 
+        // save ingredient
         ingredientRepository.save(newIngredient);
+
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' added successfully.");
         return "redirect:/ingredients/";
@@ -58,19 +60,20 @@ public class IngredientController {
 
     @PostMapping("edit")
     public String editIngredient(@ModelAttribute Ingredient ingredient, @RequestParam int ingredientId, Model model, RedirectAttributes ra) {
+        // error checking
         if (ingredient.getName()==null || ingredient.getName()=="") {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required.");
             return "redirect:/ingredients/";
         }
-
         if (!ingredientRepository.findByName(ingredient.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient '" + ingredient.getName() + "' already exists.");
             return "redirect:/ingredients/";
         }
 
+        // save ingredient
         ingredient.setId(ingredientId);
         ingredientRepository.save(ingredient);
 
@@ -81,15 +84,14 @@ public class IngredientController {
 
     @PostMapping("delete")
     public String deleteIngredient(@RequestParam int ingredientId, RedirectAttributes ra) {
-
         Optional optIngredient = ingredientRepository.findById(ingredientId);
         Ingredient ingredient = (Ingredient) optIngredient.get();
 
+        // delete ingredient
         ingredientRepository.delete(ingredient);
 
         ra.addFlashAttribute("class", "alert alert-danger");
         ra.addFlashAttribute("message", "Ingredient '" + ingredient.getName() + "' deleted successfully.");
-
         return "redirect:/ingredients/";
     }
 

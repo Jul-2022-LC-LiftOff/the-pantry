@@ -55,11 +55,19 @@ public class RecipeController {
     }
 
     @PostMapping("add-recipe")
-    public String addRecipe(Model model, @ModelAttribute @Valid Recipe newRecipe, Errors errors) {
+    public String addRecipe(Model model, @ModelAttribute @Valid Recipe newRecipe, Errors errors, RedirectAttributes ra) {
+        // error checking
         if (errors.hasErrors()) {
             model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             return "recipes/index";
         }
+        if (!recipeRepository.findByName(newRecipe.getName()).isEmpty()) {
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient '" + newRecipe.getName() + "' already exists.");
+            return "redirect:/recipes/";
+        }
+
+        // save recipe
         recipeRepository.save(newRecipe);
         int recipeId = newRecipe.getId();
         return "redirect:edit/" + recipeId;
@@ -101,10 +109,12 @@ public class RecipeController {
 
     @PostMapping("edit/save-recipe")
     public String saveRecipe(@ModelAttribute Recipe recipe, @RequestParam int recipeId, Model model, Errors errors, RedirectAttributes ra) {
+        // error checking
         if (errors.hasErrors()) {
             return "redirect:" + recipeId + "#message";
         }
 
+        // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
 
@@ -113,10 +123,10 @@ public class RecipeController {
         return "redirect:" + recipeId + "#message";
     }
 
-    // add/delete recipe ingredients
+    // add/edit/delete recipe ingredients
 
     @PostMapping("edit/add-ingredient")
-    public String updateRecipe(@ModelAttribute Recipe recipe, @ModelAttribute RecipeIngredient newRecipeIngredient, @RequestParam String amount, @RequestParam int ingredientId, @RequestParam int recipeId, @RequestParam int unitId, Errors errors, Model model, RedirectAttributes ra) {
+    public String addIngredient(@ModelAttribute Recipe recipe, @ModelAttribute RecipeIngredient newRecipeIngredient, @RequestParam String amount, @RequestParam int ingredientId, @RequestParam int recipeId, @RequestParam int unitId, Errors errors, Model model, RedirectAttributes ra) {
         // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
@@ -155,8 +165,53 @@ public class RecipeController {
 
         // save ingredient
         recipeIngredientRepository.save(newRecipeIngredient);
+
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' added successfully.");
+        return "redirect:" + recipeId + "#message";
+    }
+
+    @PostMapping("edit/edit-ingredient")
+    public String editIngredient(@ModelAttribute RecipeIngredient recipeIngredient, @RequestParam int recipeIngredientId, @RequestParam String amount, @RequestParam int ingredientId, @RequestParam int recipeId, @RequestParam int unitId, Errors errors, Model model, RedirectAttributes ra) {
+        // error checking
+        if (ingredientId==0) {
+            ra.addFlashAttribute("class", "alert alert-danger");
+            ra.addFlashAttribute("message", "Ingredient is required.");
+            return "redirect:" + recipeId + "#message";
+        }
+        if (!recipeIngredientRepository.findByRecipeIdAndIngredientId(recipeId, ingredientId).isEmpty()) {
+            if (recipeIngredientRepository.findByIdAndIngredientId(recipeIngredientId, ingredientId).isEmpty()) {
+                Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
+                Ingredient ingredient = optIngredient.get();
+                ra.addFlashAttribute("class", "alert alert-danger");
+                ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' already exists.");
+                return "redirect:" + recipeId + "#message";
+            }
+        }
+
+        // set recipe ingredient
+        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+        if(optRecipe.isPresent()) {
+            Recipe recipe = optRecipe.get();
+            recipeIngredient.setRecipe(recipe);
+        }
+        Optional<Unit> optUnit = unitRepository.findById(unitId);
+        if(optUnit.isPresent()) {
+            Unit unit = optUnit.get();
+            recipeIngredient.setUnit(unit);
+        }
+        Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientId);
+        if(optIngredient.isPresent()) {
+            Ingredient ingredient = optIngredient.get();
+            recipeIngredient.setIngredient(ingredient);
+        }
+        recipeIngredient.setAmount(amount);
+
+        // save recipe ingredient
+        recipeIngredient.setId(recipeIngredientId);
+        recipeIngredientRepository.save(recipeIngredient);
+        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("message", "Recipe ingredient '" + optIngredient.get().getName() + "' saved successfully.");
         return "redirect:" + recipeId + "#message";
     }
 
@@ -165,6 +220,7 @@ public class RecipeController {
         Optional<RecipeIngredient> optRecipeIngredient = recipeIngredientRepository.findById(recipeIngredientId);
         RecipeIngredient recipeIngredient = optRecipeIngredient.get();
 
+        // delete recipe ingredient
         recipeIngredientRepository.deleteById(recipeIngredientId);
 
         ra.addFlashAttribute("class", "alert alert-success");
@@ -200,15 +256,16 @@ public class RecipeController {
 
     @PostMapping("edit/upload-image")
     public String uploadImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, @RequestParam("file") MultipartFile file, RedirectAttributes ra, Exception exception)  {
+        // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
 
+        // error checking
         if (file.isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Please select an image to upload.");
             return "redirect:" + recipeId + "#message";
         }
-
         if (exception instanceof MaxUploadSizeExceededException) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Max file size exceeded.");
@@ -218,6 +275,7 @@ public class RecipeController {
         // normalize the file path
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
+        // upload image
         try {
             Path pathToImages = Paths.get("./src/main/resources/static/images");
             if (!Files.exists(pathToImages)) {
@@ -229,6 +287,7 @@ public class RecipeController {
             e.printStackTrace();
         }
 
+        // save image name to db
         if(fileName!=null || fileName != "") {
             recipe.setImage(fileName);
             recipeRepository.save(recipe);
@@ -244,9 +303,11 @@ public class RecipeController {
 
     @PostMapping("edit/delete-image")
     public String deleteImage(@ModelAttribute Recipe recipe, @RequestParam int recipeId, RedirectAttributes ra) {
+        // save recipe
         recipe.setId(recipeId);
         recipeRepository.save(recipe);
 
+        // delete image
         try {
             File file = new File("./src/main/resources/static/images/" + recipe.getImage());
             file.delete();
@@ -258,6 +319,7 @@ public class RecipeController {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Image delete failed.");
         }
+
         return "redirect:" + recipeId + "#message";
     }
 }

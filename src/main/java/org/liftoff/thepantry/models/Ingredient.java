@@ -1,27 +1,26 @@
 package org.liftoff.thepantry.models;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Ingredient extends AbstractEntity {
 
-    @OneToMany
-    @JoinColumn(name = "ingredient_id")
-    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "id")
+    private RecipeIngredient recipeIngredient;
 
     public Ingredient() {
     }
 
     // getters and setters
 
-    public List<RecipeIngredient> getRecipeIngredients() {
-        return recipeIngredients;
+    public RecipeIngredient getRecipeIngredient() {
+        return recipeIngredient;
     }
 
-    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
+    public void setRecipeIngredient(RecipeIngredient recipeIngredient) {
+        this.recipeIngredient = recipeIngredient;
     }
-
 }
