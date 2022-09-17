@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+
+   <header>
+      <div th:replace="fragments :: nav"></div>
+      <div th:replace="fragments :: banner"></div>
+   </header>
+
+   <div class="container body-content py-3">
+      <h1>About The Pantry</h1>
+      <p>
+         The Pantry is here to help you cook meals with less stress. We offer recipes and cooking advice for home cooks, based on ingredients available in your Pantry. Helping you find delicious recipes is what we’re all about.
+      </p>
+
+      <h3>The Pantry Development & Testing</h3>
+      <p>
+         This site was developed as a Liftoff group portfolio project to display knowledge learned from the LaunchCode LC101 course.
+      </p>
+      <h5>Languages/Technology</h5>
+      <ul>
+         <li>Java</li>
+         <li>Spring Boot</li>
+         <li>Thymeleaf</li>
+         <li>Bootstrap</li>
+         <li>HTML</li>
+         <li>CSS</li>
+      </ul>
+
+      <h3>Project Team Members</h3>
+      <ul>
+         <li>Dan Hart (LaunchCode TA)</li>
+         <li>James Niebruegge (Developer)</li>
+         <li>Jisha Govindan (Developer)</li>
+         <li>Ana Avila (Developer)</li>
+         <li>Henry Lewis (Developer)</li>
+         <li>Lorin Smith (Developer)</li>
+      </ul>
+   </div>
+
+   <footer th:replace="fragments :: footer"></footer>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+
+<script type='text/javascript'>
+function setRecipeName(instruction) {
+
+
+    return false;
+}
+</script>
+<body>
+<div  th:replace="fragments :: page-header"></div>
+
+<div   class="container body-content">
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Instructions</th>
+        </tr>
+        <tr th:each="recipe:${recipes}">
+            <td th:text="${recipe.name}"></td>
+            <td th:text="${recipe.description}"></td>
+            <td th:text="${recipe.instructions}"></td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+
+
+</body>
+</html>
