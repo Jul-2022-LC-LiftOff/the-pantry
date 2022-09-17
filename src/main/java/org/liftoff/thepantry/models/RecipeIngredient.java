@@ -1,7 +1,6 @@
 package org.liftoff.thepantry.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 public class RecipeIngredient {
@@ -10,16 +9,18 @@ public class RecipeIngredient {
     @GeneratedValue
     private int id;
 
-    @NotBlank(message = "Amount is required")
     private String amount;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
     private Ingredient ingredient;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     private Recipe recipe;
 
     public RecipeIngredient() {
@@ -32,7 +33,7 @@ public class RecipeIngredient {
         this.unit = unit;
     }
 
-    // Getters and Setters
+    // getters and setters
 
     public int getId() {
         return id;
