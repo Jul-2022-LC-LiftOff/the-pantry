@@ -22,6 +22,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
+        model.addAttribute("banner", "home");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "index";
     }
@@ -42,6 +43,7 @@ public class HomeController {
     public String recipe(Model model, @PathVariable int recipeId) {
         Optional optRecipe = recipeRepository.findById(recipeId);
         Recipe recipe = (Recipe) optRecipe.get();
+        model.addAttribute("banner", "recipe");
         model.addAttribute("recipe", recipe);
         model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
         return "recipe";
