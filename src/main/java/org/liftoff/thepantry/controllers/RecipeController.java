@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("recipes")
+@RequestMapping("admin/recipes")
 public class RecipeController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class RecipeController {
     public String index(Model model) {
         model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new Recipe());
-        return "recipes/index";
+        return "admin/recipes/index";
     }
 
     @PostMapping("add-recipe")
@@ -59,18 +59,18 @@ public class RecipeController {
         // error checking
         if (errors.hasErrors()) {
             model.addAttribute("recipes", recipeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
-            return "recipes/index";
+            return "admin/recipes/index";
         }
         if (!recipeRepository.findByName(newRecipe.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
-            ra.addFlashAttribute("message", "Ingredient '" + newRecipe.getName() + "' already exists.");
-            return "redirect:/recipes/";
+            ra.addFlashAttribute("message", "Recipe '" + newRecipe.getName() + "' already exists.");
+            return "redirect:/admin/recipes/";
         }
 
         // save recipe
         recipeRepository.save(newRecipe);
         int recipeId = newRecipe.getId();
-        return "redirect:edit/" + recipeId;
+        return "redirect:/admin/recipes/edit/" + recipeId;
     }
 
     @PostMapping("delete-recipe")
@@ -91,7 +91,7 @@ public class RecipeController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Recipe '" + recipe.getName() + "' deleted successfully");
-        return "redirect:/recipes/";
+        return "redirect:/admin/recipes/";
     }
 
     @GetMapping("edit/{recipeId}")
@@ -104,7 +104,7 @@ public class RecipeController {
         model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipeId));
         model.addAttribute(new RecipeIngredient());
         model.addAttribute(new Ingredient());
-        return "recipes/edit";
+        return "admin/recipes/edit";
     }
 
     @PostMapping("edit/save-recipe")

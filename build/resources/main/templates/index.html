@@ -18,7 +18,7 @@
                     <a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="card-img-top"></a>
                     <div class="card-body">
                         <h5 class="card-title"><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></h5>
-                        <p class="card-text" th:text="${#strings.abbreviate(recipe.description,90)}"></p>
+                        <p class="card-text" th:text="${#strings.abbreviate(recipe.description,85)}"></p>
                     </div>
                 </div>
             </div>

@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("units")
+@RequestMapping("admin/units")
 public class UnitController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class UnitController {
         model.addAttribute("activeUnits", activeUnits);
         model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new Unit());
-        return "units/index";
+        return "admin/units/index";
     }
 
     @PostMapping("add")
@@ -42,12 +42,12 @@ public class UnitController {
             model.addAttribute("units", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required.");
-            return "redirect:/units/";
+            return "redirect:/admin/units/";
         }
         if (!unitRepository.findByName(newUnit.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Unit '" + newUnit.getName() + "' already exists.");
-            return "redirect:/units/";
+            return "redirect:/admin/units/";
         }
 
         // save unit
@@ -55,7 +55,7 @@ public class UnitController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Unit '" + newUnit.getName() + "' added successfully.");
-        return "redirect:/units/";
+        return "redirect:/admin/units/";
     }
 
     @PostMapping("edit")
@@ -65,12 +65,12 @@ public class UnitController {
             model.addAttribute("ingredients", unitRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required.");
-            return "redirect:/units/";
+            return "redirect:/admin/units/";
         }
         if (!unitRepository.findByName(unit.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient '" + unit.getName() + "' already exists.");
-            return "redirect:/units/";
+            return "redirect:/admin/units/";
         }
 
         // save unit
@@ -79,7 +79,7 @@ public class UnitController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Ingredient '" + unit.getName() + "' updated successfully.");
-        return "redirect:/units/";
+        return "redirect:/admin/units/";
     }
 
     @PostMapping("delete")
@@ -92,7 +92,7 @@ public class UnitController {
 
         ra.addFlashAttribute("class", "alert alert-danger");
         ra.addFlashAttribute("message", "Ingredient '" + unit.getName() + "' deleted successfully.");
-        return "redirect:/ingredients/";
+        return "redirect:/admin/units/";
     }
 
 }
