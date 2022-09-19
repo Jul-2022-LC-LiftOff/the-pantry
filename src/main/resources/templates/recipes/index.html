@@ -3,7 +3,9 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-    <div th:replace="fragments :: page-header"></div>
+    <header>
+        <div th:replace="fragments :: nav"></div>
+    </header>
 
     <div class="container body-content py-3">
 
@@ -47,10 +49,12 @@
                         </div>
                     </div>
                 </li>
-            </ul>
-        </div>
-
-    </div>
 
 </body>
 </html>
+</ul>
+</div>
+
+</div>
+
+<footer th:replace="fragments :: footer"></footer>
