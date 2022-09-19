@@ -1,28 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-<body class="container body-content">
-<h2>Ingredients</h2>
+<body>
 
-<nav th:replace="fragments :: page-header"></nav>
+    <header>
+        <div th:replace="fragments :: nav"></div>
+    </header>
 
-<form method="post" action="add">
-    <div class="form-group">
-        <div class="col-xs-3">
-            <input class="form-control" placeholder="Ingredient Name" th:field="${ingredient.name}" />
+    <div class="container body-content py-3">
+        <h1>Ingredients</h1>
+
+        <div class="container py-3">
+            <form method="post" action="add">
+                <div class="w-50">
+                    <div class="input-group">
+                        <span class="input-group-text" id="">Name</span>
+                        <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
+                        <input class="btn btn-primary" type="submit" value="Add" />
+                    </div>
+                </div>
+            </form>
         </div>
-        <div>
-            <input class="btn btn-primary" type="submit" value="Add" />
+        <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
+        <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
+
+        <div class="container py-3">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="ingredient, rowStat : ${ingredients}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
+                    <span th:text="${ingredient.name}"></span>
+
+                    <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}" th:unless="${activeIngredients.contains(ingredient)}"></i>
+                    <i class="bi bi-pencil-square text-secondary d-line" th:if="${activeIngredients.contains(ingredient)}"></i>
+                    <div class="modal fade" th:id="'editModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'editModalLabel-' + ${rowStat.index}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Ingredient</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <form action="edit" method="post" th:id="'edit-' + ${rowStat.index}" tabindex="-1">
+                                            <input type="hidden" name="ingredientId" th:value="${ingredient.id}" />
+                                            <div class="input-group">
+                                                <span class="input-group-text">Name</span>
+                                                <input class="form-control" name="name" th:value="${ingredient.name}"  />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" th:form="'edit-' + ${rowStat.index}" tabindex="-1" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <i class="bi bi-trash text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#deleteModal-' + ${rowStat.index}" th:unless="${activeIngredients.contains(ingredient)}"></i>
+                    <i class="bi bi-trash text-secondary d-line" th:if="${activeIngredients.contains(ingredient)}"></i>
+                    <div class="modal fade" th:id="'deleteModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'deleteModalLabel-' + ${rowStat.index}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete?</p>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form method="post" action="delete" class="d-inline">
+                                        <input type="hidden" name="ingredientId" th:value="${ingredient.id}" />
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
         </div>
+
     </div>
-</form>
-<span th:errors="${ingredient.name}" class="error"></span>
 
-<ul>
-    <li th:each="ingredient : ${ingredients}">
-        <a th:href="@{'#'}" th:text="${ingredient.name}"></a>
-    </li>
-</ul>
+    <footer th:replace="fragments :: footer"></footer>
 
 </body>
 </html>

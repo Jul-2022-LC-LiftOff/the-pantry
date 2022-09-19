@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+
+<script type='text/javascript'>
+function setRecipeName(instruction) {
+
+
+    return false;
+}
+</script>
+<body>
+<header>
+    <div th:replace="fragments :: nav"></div>
+</header>
+<p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
+<div   class="container body-content py-5">
+    <table id="recipetable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Instructions</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="recipe:${recipes}">
+            <td th:text="${recipe.name}"></td>
+            <td th:text="${recipe.description}"></td>
+            <td>
+                <span th:text="${recipe.name}"></span>
+                <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
+              </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<script language="JavaScript">
+
+    $(document).ready(function(){
+
+       $('#recipetable').DataTable();
+
+
+    })  // end of document ready
+
+ </script>
+
+<footer th:replace="fragments :: footer"></footer>
+</body>
+</html>

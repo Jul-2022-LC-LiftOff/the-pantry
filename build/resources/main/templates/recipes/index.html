@@ -1,27 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head">
-</head>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
 <body>
 
-<div th:replace="fragments :: page-header"></div>
+    <div th:replace="fragments :: page-header"></div>
 
-<p th:unless="${recipes} and ${recipes.size()}">no recipes!</p>
+    <div class="container body-content py-3">
 
-<div class="container body-content">
-    <h2>Recipes</h2>
-    <a class="btn btn-primary" th:href="@{'/recipes/add'}" role="button">Add Recipe</a>
+        <h1>Recipes</h1>
 
-    <p>
-        <ul>
-            <li th:each="recipe : ${recipes}">
-                <a th:href="@{'/recipes/recipe-ingredients/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-                <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
-            </li>
-        </ul>
-    </p>
+        <div class="container py-3">
+            <form method="post" action="add-recipe">
+                <div class="w-50">
+                    <div class="input-group">
+                        <span class="input-group-text" id="">Name</span>
+                        <input class="form-control" placeholder="enter name" th:field="${recipe.name}" />
+                        <input class="btn btn-primary" type="submit" value="Next" />
+                    </div>
+                </div>
+            </form>
+        </div>
 
-</div>
+        <p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
+        <p th:errors="${recipe.name}" class="alert alert-danger"></p>
+        <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
+
+        <div class="container">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="recipe, rowStat : ${recipes}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
+                    <span th:text="${recipe.name}"></span>
+                    <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
+                    <i class="bi bi-trash text-primary" role="button" data-bs-toggle="modal" th:data-bs-target="'#deleteRecipeModal-' + ${rowStat.index}"></i>
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="'deleteRecipeModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'deleteRecipeModalLabel-' + ${rowStat.index}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete?</p>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form method="post" action="delete-recipe" class="d-inline">
+                                        <input type="hidden" name="recipeId" th:value="${recipe.id}" />
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
 
 </body>
 </html>
