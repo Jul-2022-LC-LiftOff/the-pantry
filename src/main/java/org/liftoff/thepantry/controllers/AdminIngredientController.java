@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("admin/ingredients")
-public class IngredientController {
+public class AdminIngredientController {
 
     @Autowired
     private IngredientRepository ingredientRepository;

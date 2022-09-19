@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("admin/units")
-public class UnitController {
+public class AdminUnitController {
 
     @Autowired
     UnitRepository unitRepository;
