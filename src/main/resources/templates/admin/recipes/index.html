@@ -31,7 +31,7 @@
             <ul class="list-group">
                 <li class="list-group-item" th:each="recipe, rowStat : ${recipes}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                     <span th:text="${recipe.name}"></span>
-                    <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
+                    <a th:href="@{'/admin/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
                     <i class="bi bi-trash text-primary" role="button" data-bs-toggle="modal" th:data-bs-target="'#deleteRecipeModal-' + ${rowStat.index}"></i>
                     <!-- Modal -->
                     <div class="modal fade" th:id="'deleteRecipeModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'deleteRecipeModalLabel-' + ${rowStat.index}" aria-hidden="true">

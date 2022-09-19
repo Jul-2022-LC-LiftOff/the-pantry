@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("ingredients")
-public class IngredientController {
+@RequestMapping("admin/ingredients")
+public class AdminIngredientController {
 
     @Autowired
     private IngredientRepository ingredientRepository;
@@ -32,7 +32,7 @@ public class IngredientController {
         model.addAttribute("activeIngredients", activeIngredients);
         model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
         model.addAttribute(new Ingredient());
-        return "ingredients/index";
+        return "admin/ingredients/index";
     }
 
     @PostMapping("add")
@@ -42,12 +42,12 @@ public class IngredientController {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required.");
-            return "redirect:/ingredients/";
+            return "redirect:/admin/ingredients/";
         }
         if (!ingredientRepository.findByName(newIngredient.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' already exists.");
-            return "redirect:/ingredients/";
+            return "redirect:/admin/ingredients/";
         }
 
         // save ingredient
@@ -55,7 +55,7 @@ public class IngredientController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Ingredient '" + newIngredient.getName() + "' added successfully.");
-        return "redirect:/ingredients/";
+        return "redirect:/admin/ingredients/";
     }
 
     @PostMapping("edit")
@@ -65,12 +65,12 @@ public class IngredientController {
             model.addAttribute("ingredients", ingredientRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Name is required.");
-            return "redirect:/ingredients/";
+            return "redirect:/admin/ingredients/";
         }
         if (!ingredientRepository.findByName(ingredient.getName()).isEmpty()) {
             ra.addFlashAttribute("class", "alert alert-danger");
             ra.addFlashAttribute("message", "Ingredient '" + ingredient.getName() + "' already exists.");
-            return "redirect:/ingredients/";
+            return "redirect:/admin/ingredients/";
         }
 
         // save ingredient
@@ -79,7 +79,7 @@ public class IngredientController {
 
         ra.addFlashAttribute("class", "alert alert-success");
         ra.addFlashAttribute("message", "Ingredient '" + ingredient.getName() + "' updated successfully.");
-        return "redirect:/ingredients/";
+        return "redirect:/admin/ingredients/";
     }
 
     @PostMapping("delete")
@@ -92,7 +92,7 @@ public class IngredientController {
 
         ra.addFlashAttribute("class", "alert alert-danger");
         ra.addFlashAttribute("message", "Ingredient '" + ingredient.getName() + "' deleted successfully.");
-        return "redirect:/ingredients/";
+        return "redirect:/admin/ingredients/";
     }
 
 }
