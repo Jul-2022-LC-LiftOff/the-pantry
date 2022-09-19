@@ -2,32 +2,119 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 
 <head th:fragment="head">
-    <!-- CSS only -->
+    <!-- CSS only
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
+    -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" >
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.js"></script>
+
+    <link th:href="@{/css/search.css}" rel="stylesheet" />
+
+    <!-- JavaScript Bundle with Popper
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+-->
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <!-- Data Tables -->
+    <link rel="stylesheet" href="https:////cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <title th:text="'The Pantry' + ${title == null ? '' : ' :: ' + title}">The Pantry</title>
 </head>
 
 <body>
 
-    <nav th:fragment="page-header" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a th:href="@{/}" class="navbar-brand">The Pantry</a>
+            <a class="navbar-brand" th:href="@{/}"><img src="/images/logo.png" height="50"></a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/list}">List</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/search}">Search</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/recipes/}">Recipes</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/ingredients/}">Ingredients</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/units/}">Units</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/search/}">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/list/}">List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/about}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/features}">Features</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" th:href="@{/recipes/}">Recipes</a>
+                            <a class="dropdown-item" th:href="@{/ingredients/}">Ingredients</a>
+                            <a class="dropdown-item" th:href="@{/units/}">Units</a>
+                        </div>
+                    </li>
+
                 </ul>
             </div>
+            <!--
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Admin Menu
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" th:href="@{/recipes/}">Recipes</a></li>
+                    <li><a class="dropdown-item" th:href="@{/ingredients/}">Ingredients</a></li>
+                    <li><a class="dropdown-item" th:href="@{/units/}">Units</a></li>
+                </ul>
+            </div>
+            -->
         </div>
     </nav>
 
+    <banner th:fragment="banner" class="p-5 text-center bg-image d-flex justify-content-center align-items-center shadow border-bottom" style="background-image: url('/images/banner-home.jpg'); height: 350px;">
+        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+            <div class="d-flex justify-content-center align-items-center h-100 px-5 pt-3 pb-4">
+                <div class="text-white">
+                    <h1 class="mb-3"><a class="text-white text-reset text-decoration-none" th:href="@{/}">THE PANTRY</a></h1>
+                    <h4 class="mb-3">Find recipe inspiration based on the food in your pantry.</h4>
+                    <form method="post" action="search">
+                        <div class="w-50 mx-auto">
+                            <div class="input-group">
+                                <input class="form-control" name="search" placeholder="Let's raid the Pantry!" />
+                                <input class="btn btn-dark" type="submit" value="Search" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </banner>
+
+
+    <footer th:fragment="footer" class="border-top bg-dark mt-3">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center py-4">
+            <p class="col-md-6 mb-0 text-muted">
+                © Copyright <span th:text="${#dates.year(#dates.createNow())}"></span> <a class="text-muted text-decoration-none fw-bolder" th:href="@{/}">The Pantry</a> - All Rights Reserved
+            </p>
+            <ul class="nav col-md-6 justify-content-end">
+                <li class="nav-item"><a class="nav-link px-2 text-muted" th:href="@{/}">Home</a>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" th:href="@{/list/}">List</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" th:href="@{/search/}">Search</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" th:href="@{/about}">About</a></li>
+                <li class="nav-item"><a class="nav-link px-2 text-muted" th:href="@{/features}">Features</a></li>
+            </ul>
+        </div>
+
+    </footer>
 </body>
 </html>

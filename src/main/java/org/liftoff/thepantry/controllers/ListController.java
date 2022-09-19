@@ -1,6 +1,7 @@
 package org.liftoff.thepantry.controllers;
 
 import org.liftoff.thepantry.data.IngredientRepository;
+import org.liftoff.thepantry.data.RecipeIngredientRepository;
 import org.liftoff.thepantry.data.RecipeRepository;
 import org.liftoff.thepantry.data.SearchDTO;
 import org.liftoff.thepantry.models.Ingredient;
@@ -29,6 +30,9 @@ public class ListController {
     @Autowired
     private IngredientRepository ingredientRepository;
 
+    @Autowired
+    private RecipeIngredientRepository recipeIngredientRepository;
+
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("recipes", recipeRepository.findAll());
@@ -43,6 +47,7 @@ public class ListController {
         String[] text2search = searchDTO.getIngredients().split("~~~");
         ArrayList<Integer> ingredientsArray = new ArrayList();
         ArrayList<Recipe> recipes = new ArrayList<>();
+
         Iterator searchIterator = Arrays.stream(text2search).iterator();
         while(searchIterator.hasNext()) {
             String searchText = (String) searchIterator.next();
@@ -56,17 +61,28 @@ public class ListController {
         System.out.println("List of ingre to search = " + ingredientsArray);
         Iterable ingreIterable = ingredientRepository.findAllById(ingredientsArray);
         Iterator ingreIterator = ingreIterable.iterator();
+
+        List<Integer> listOfSelectedRecipes = new ArrayList<>();
         while (ingreIterator.hasNext()) {
             System.out.println(" searching for ingredients");
             Ingredient ing = (Ingredient) ingreIterator.next();
             System.out.println("Found ingre = " + ing.getName());
-            List<RecipeIngredient> recIng = ing.getRecipeIngredients();
-            for(RecipeIngredient ri : recIng ) {
-                recipes.add(ri.getRecipe());
-                System.out.println(" Added recipe with name " + ri.getRecipe().getName());
-            }
-        }
 
+          List<RecipeIngredient> recipeIngredientList = recipeIngredientRepository.findByIngredientId(ing.getId());
+          int nofRecipeIngredients = recipeIngredientList.size();
+
+          for(int i = 0; i < nofRecipeIngredients; i++) {
+              RecipeIngredient ri = recipeIngredientList.get(i);
+              System.out.println(" Got recipe " + ri.getRecipe().getName());
+              if (!listOfSelectedRecipes.contains(ri.getRecipe().getId())) {
+                  // Keep a list of selected recipes to avoid duplicates.
+                  System.out.println(" added to return array");
+                  recipes.add(ri.getRecipe());
+                  listOfSelectedRecipes.add(ri.getRecipe().getId());
+              }
+          }
+        }
+        System.out.println("Return map contains " + recipes.size());
         model.addAttribute("recipes",recipes);
         return "list/index";
     }

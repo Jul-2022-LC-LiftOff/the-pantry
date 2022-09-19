@@ -11,27 +11,47 @@ function setRecipeName(instruction) {
 }
 </script>
 <body>
-<div  th:replace="fragments :: page-header"></div>
-
-<div   class="container body-content">
-    <table class="table">
+<header>
+    <div th:replace="fragments :: nav"></div>
+</header>
+<p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
+<div   class="container body-content py-5">
+    <table id="recipetable" class="table table-striped">
+        <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Instructions</th>
+
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="recipe:${recipes}">
             <td th:text="${recipe.name}"></td>
             <td th:text="${recipe.description}"></td>
-            <td th:text="${recipe.instructions}"></td>
+            <td>
+                <span th:text="${recipe.name}"></span>
+                <a th:href="@{'/recipes/edit/' + ${recipe.id}}"><i class="bi glyphicon bi-pencil-square"></i></a>
+              </td>
 
         </tr>
-
+        </tbody>
     </table>
 
 </div>
 
 
+<script language="JavaScript">
 
+    $(document).ready(function(){
+
+       $('#recipetable').DataTable();
+
+
+    })  // end of document ready
+
+ </script>
+
+<footer th:replace="fragments :: footer"></footer>
 </body>
 </html>

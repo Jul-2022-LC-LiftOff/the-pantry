@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+
+   <header>
+      <div th:replace="fragments :: nav"></div>
+      <div th:replace="fragments :: banner"></div>
+   </header>
+
+   <div class="container body-content py-3">
+      <h1>Features and Functionality</h1>
+      <h5>End User</h5>
+      <ul>
+         <li>Browse recipes (list recipe cards w/ link to recipe)</li>
+         <li>Search recipes (return recipe cards)</li>
+         <li>View full recipe (display recipe)</li>
+      </ul>
+      <h5>Administration</h5>
+      <ul>
+         <li>Add Units (add, edit, delete)</li>
+         <li>Add Ingredients (add, edit, delete)</li>
+         <li>Add Recipe (add, edit, delete)
+            <ul>
+               <li>Name</li>
+               <li>Description</li>
+               <li>Instructions</li>
+               <li>Image (upload and delete)</li>
+               <li>Recipe ingredients (add, edit, delete)</li>
+               <ul>
+                  <li>Amount</li>
+                  <li>Unit</li>
+                  <li>Ingredient</li>
+               </ul>
+               <li>Add new ingredient (for availability)</li>
+            </ul>
+         </li>
+      </ul>
+
+      <p>Extensive error checking for admin included for adding, editing and deleting. Including modal popup warnings and error/success messages on actions.</p>
+   </div>
+
+   <footer th:replace="fragments :: footer"></footer>
+
+</body>
+</html>

@@ -9,4 +9,5 @@ public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredie
     List<RecipeIngredient> findByRecipeId(int recipe_id);
     List<RecipeIngredient> findByRecipeIdAndIngredientId(int recipe_id, int ingredient_id);
     List<RecipeIngredient> findByIdAndIngredientId(int id, int ingredient_id);
+    List<RecipeIngredient> findByIngredientId(int ingredient_id);
 }
