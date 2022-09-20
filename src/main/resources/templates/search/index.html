@@ -22,26 +22,32 @@
 
 <div class="container body-content py-3">
     <h1>Advanced Search</h1>
-    <p>Add multiple ingredients to search.</p>
-    <form method="post" action="/list">
-        <div class="container">
-            <div class="input-group mb-3">
-                <select class="form-control basicAutoSelect" id="ingredient_select" name="ingredient_select"
-                    placeholder="Enter ingredient to search"
-                    data-url="/search/filter/"
-                    data-noresults-text="No ingredients found."
-                    autocomplete="off"></select>
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" onclick="addIngredient()"  >Add</button>
+    <p>Add multiple ingredients to search recipes.</p>
+
+    <div class="container">
+        <form method="post" action="/list">
+            <div class="w-50 mb-3">
+                <div class="input-group">
+                    <select class="form-control basicAutoSelect" id="ingredient_select" name="ingredient_select"
+                            placeholder="Enter ingredient to search"
+                            data-url="/search/filter/"
+                            data-noresults-text="No ingredients found."
+                            autocomplete="off"></select>
+                    <button class="btn btn-outline-secondary" type="button" onclick="addIngredient()">Add</button>
                 </div>
             </div>
-            <textarea class="form-control" id="textAreaIngredients" rows="3"></textarea>
-            <div class="pt-3">
-                <button class="btn btn-primary" type="submit">Search</button>
+            <div class="w-50 mb-3">
+                <h5 class="text-muted">Ingredients</h5>
+                <div class="input-group mb-3">
+                    <textarea class="form-control" id="textAreaIngredients" rows="3" readonly></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
             </div>
-        </div>
-        <input type="hidden" id="hiddeningredients" th:field="${searchDTO.ingredients}"/>
-    </form>
+            <input type="hidden" id="hiddeningredients" th:field="${searchDTO.ingredients}"/>
+        </form>
+    </div>
 
     <script language="JavaScript">
         $(document).ready(function(){
