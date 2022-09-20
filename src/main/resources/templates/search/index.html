@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
-<head th:replace="fragments :: head">
-</head>
+<head th:replace="fragments :: head"></head>
 
-
-<body>
 <script>
     function addIngredient() {
         selIngTextArea = document.getElementById("textAreaIngredients");
@@ -16,42 +13,45 @@
     }
 </script>
 
+<body>
 
 <header>
     <div th:replace="fragments :: nav"></div>
+    <div th:replace="fragments :: banner"></div>
 </header>
-<form method="post" action="/list">
-<div class="container body-content form-group py-5">
-<div class="input-group mb-3">
-    <select class="form-control basicSearchAutoSelect" id="ingredient_select" name="ingredient_select"
-            placeholder="Enter ingredient to search"
-            data-url="/search/filter/"
-            data-noresults-text="No ingredients found."
-            autocomplete="off"></select>
-     <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" onclick="addIngredient()"  >Add</button>
-    </div>
+
+<div class="container body-content py-3">
+    <h1>Advanced Search</h1>
+    <p>Add multiple ingredients to search.</p>
+    <form method="post" action="/list">
+        <div class="container">
+            <div class="input-group mb-3">
+                <select class="form-control basicAutoSelect" id="ingredient_select" name="ingredient_select"
+                    placeholder="Enter ingredient to search"
+                    data-url="/search/filter/"
+                    data-noresults-text="No ingredients found."
+                    autocomplete="off"></select>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" onclick="addIngredient()"  >Add</button>
+                </div>
+            </div>
+            <textarea class="form-control" id="textAreaIngredients" rows="3"></textarea>
+            <div class="pt-3">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+        <input type="hidden" id="hiddeningredients" th:field="${searchDTO.ingredients}"/>
+    </form>
+
+    <script language="JavaScript">
+        $(document).ready(function(){
+            $('.basicAutoSelect').autoComplete();
+        })  // end of document ready
+     </script>
+
 </div>
-    <textarea class="form-control" id="textAreaIngredients" rows="3"></textarea>
-    <div class="pt-3">
-    <button class="btn btn-primary" type="submit">Search</button>
-    </div>
-</div>
 
-    <input type="hidden" id="hiddeningredients" th:field="${searchDTO.ingredients}"/>
-
-</form>
-
-<script language="JavaScript">
-
-    $(document).ready(function(){
-
-        $('.basicSearchAutoSelect').autoComplete();
-
-
-    })  // end of document ready
-
- </script>
 <footer th:replace="fragments :: footer"></footer>
+
 </body>
 </html>

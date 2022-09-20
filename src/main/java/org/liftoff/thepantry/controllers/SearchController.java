@@ -2,23 +2,20 @@ package org.liftoff.thepantry.controllers;
 
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.liftoff.thepantry.data.IngredientRepository;
 import org.liftoff.thepantry.data.SearchDTO;
-//import org.liftoff.thepantry.data.TagRepository;
 import org.liftoff.thepantry.models.Ingredient;
-//import org.liftoff.thepantry.models.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-
-
-import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 @Controller
@@ -30,11 +27,8 @@ public class SearchController {
 
     @GetMapping
     public String index(Model model) {
-//        model.addAttribute("title", "Recipes");
-//        model.addAttribute("recipes", recipeRepository.findAll());
-
+        model.addAttribute("banner", "search");
         System.out.println("------------- In SearchController - index");
-     //   model.addAttribute("tags", tagRepository.findAll());
         model.addAttribute("ingredients", ingredientRepository.findAll());
         model.addAttribute(new SearchDTO());
         return "search/index";
