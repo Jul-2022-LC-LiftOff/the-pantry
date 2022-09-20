@@ -33,7 +33,7 @@ public class RecipeListController {
 //        return "events/create";
 //    }
 
-    @GetMapping("list")
+    @GetMapping("recipelist")
     public String listRecipes(Model model) {
         SearchCriteria searchCriteria = null;
         Recipe recipe = new Recipe();
