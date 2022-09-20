@@ -8,10 +8,10 @@ import javax.validation.constraints.Size;
 @Entity
 public class Recipe extends AbstractEntity {
 
-    @Size(max = 500)
+    @Size(max = 1000)
     private String description;
 
-    @Size(max = 2500)
+    @Size(max = 3000)
     private String instructions;
 
     private String image;

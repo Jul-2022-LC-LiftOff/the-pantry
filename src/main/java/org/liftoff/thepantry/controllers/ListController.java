@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 @RequestMapping("list")
@@ -35,12 +37,13 @@ public class ListController {
 
     @GetMapping("")
     public String index(Model model) {
+        model.addAttribute("banner", "search");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "list/index";
     }
 
     @PostMapping()
-    public String searchRecipe(@ModelAttribute @Valid SearchDTO searchDTO, Errors errors, Model model) {
+    public String searchRecipe(@ModelAttribute @Valid SearchDTO searchDTO, Model model, Errors errors) {
 
         System.out.println("------------- In ListController - search");
         System.out.println("Search text = " + searchDTO.getIngredients());
@@ -83,6 +86,7 @@ public class ListController {
           }
         }
         System.out.println("Return map contains " + recipes.size());
+        model.addAttribute("banner", "search");
         model.addAttribute("recipes",recipes);
         return "list/index";
     }

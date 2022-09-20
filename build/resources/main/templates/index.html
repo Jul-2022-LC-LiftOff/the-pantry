@@ -3,12 +3,30 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-    <div th:replace="fragments :: page-header"></div>
+<header>
+    <div th:replace="fragments :: nav"></div>
+    <div th:replace="fragments :: banner"></div>
+</header>
 
-    <div class="container body-content py-3">
-        <h1>The Pantry</h1>
-        <p>Find recipe inspiration based on the food in your pantry.</p>
+<div class="container body-content py-3">
+    <h1>Cooking from the Pantry</h1>
+    <p>Browse our recipes for just the right meal.</p>
+
+    <div class="row row-cols-4 g-4 pt-1">
+        <div class="col" th:each="recipe : ${recipes}">
+            <div class="card border shadow bg-white rounded h-100">
+                <a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="card-img-top"></a>
+                <div class="card-body">
+                    <h5 class="card-title"><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></h5>
+                    <p class="card-text" th:text="${#strings.abbreviate(recipe.description,85)}"></p>
+                </div>
+            </div>
+        </div>
     </div>
+
+</div>
+
+<footer th:replace="fragments :: footer"></footer>
 
 </body>
 </html>
