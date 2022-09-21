@@ -1,38 +1,36 @@
 package org.liftoff.thepantry.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Recipe extends AbstractEntity {
 
-    @NotBlank
+    @Size(max = 1000)
     private String description;
 
-    @NotBlank
+    @Size(max = 3000)
     private String instructions;
 
-    @ManyToMany
-    @JoinTable(name = "recipe_tag", joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
-    private List<Tag> tags = new ArrayList<>();
+    private String image;
 
-    @OneToMany
-    @JoinColumn(name = "recipe_id")
-    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "id")
+    private RecipeIngredient recipeIngredient;
 
     public Recipe() {
     }
 
-    public Recipe(String description, String instructions, List<Tag> tagsList, List<Ingredient> ingredientList) {
+    public Recipe(String description, String instructions, String image) {
         super();
         this.description = description;
         this.instructions = instructions;
-        this.tags = tagsList;
+        this.image = image;
     }
 
-    // Getters and setters
+    // getters and setters
 
     public String getDescription() {
         return description;
@@ -50,20 +48,15 @@ public class Recipe extends AbstractEntity {
         this.instructions = instructions;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public String getImage() {
+        return image;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public List<RecipeIngredient> getRecipeIngredients() {
-        return recipeIngredients;
-    }
-
-    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
+    public void setImage(String image) {
+        if (image != null && image.isEmpty()) {
+            image = null;
+        }
+        this.image = image;
     }
 
 }
