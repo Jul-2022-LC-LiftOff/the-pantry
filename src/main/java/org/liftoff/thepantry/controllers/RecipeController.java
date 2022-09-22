@@ -4,6 +4,7 @@ import org.liftoff.thepantry.data.RecipeIngredientRepository;
 import org.liftoff.thepantry.data.RecipeRepository;
 import org.liftoff.thepantry.models.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -39,10 +41,21 @@ public class RecipeController {
     // display/search recipes
 
     @GetMapping("recipes")
-    public String displayRecipes(Model model) {
+    public String displayRecipes(HttpServletRequest request, Model model) {
+        int page = 0;
+        int size = 4;
+
+        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+            page = Integer.parseInt(request.getParameter("page")) - 1;
+        }
+
+        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+            size = Integer.parseInt(request.getParameter("size"));
+        }
+
         model.addAttribute("banner", "recipes");
         model.addAttribute("title", "Browse Recipes");
-        model.addAttribute("recipes", recipeRepository.findAll());
+        model.addAttribute("recipes", recipeRepository.findAll(PageRequest.of(page, size)));
         return "recipes";
     }
 
