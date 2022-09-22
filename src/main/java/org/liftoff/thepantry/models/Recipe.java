@@ -1,34 +1,43 @@
 package org.liftoff.thepantry.models;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
 
 @Entity
-public class Recipe  extends AbstractEntity {
+public class Recipe extends AbstractEntity {
 
-    @NotBlank
-    private String ingredients;
+    @Size(max = 1000)
+    private String description;
 
-    @NotBlank
+    @Size(max = 3000)
     private String instructions;
+
+    private String image;
+
+    @OneToOne
+    @JoinColumn(name = "id")
+    private RecipeIngredient recipeIngredient;
 
     public Recipe() {
     }
 
-    public Recipe(String ingredients, String instructions) {
+    public Recipe(String description, String instructions, String image) {
         super();
-        this.ingredients = ingredients;
+        this.description = description;
         this.instructions = instructions;
+        this.image = image;
     }
 
-    // Getters and setters
+    // getters and setters
 
-    public String getIngredients() {
-        return ingredients;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getInstructions() {
@@ -38,4 +47,16 @@ public class Recipe  extends AbstractEntity {
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        if (image != null && image.isEmpty()) {
+            image = null;
+        }
+        this.image = image;
+    }
+
 }

@@ -1,10 +1,12 @@
 package org.liftoff.thepantry.data;
 
 import org.liftoff.thepantry.models.Recipe;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
 
-public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
+@Repository
+public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
+    List<Recipe> findByName(String name);
 }
