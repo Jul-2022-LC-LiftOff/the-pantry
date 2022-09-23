@@ -6,6 +6,6 @@ The Pantry Sanity Project: A comprehensive meal planner for indecisive people
 - Henry Lewis(Developer)
 - Team Member Jisha
 - Ana Avila
-- Student: Lorin Smith
+- Lorin Smith
 - James Niebruegge
 
