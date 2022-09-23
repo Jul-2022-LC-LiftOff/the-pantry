@@ -7,20 +7,23 @@
         <div th:replace="fragments :: nav"></div>
     </header>
 
-    <div class="container body-content py-3">
+    <div class="container body-content p-4">
         <h1>Ingredients</h1>
 
-        <div class="container py-3">
+        <div class="container">
             <form method="post" action="add">
-                <div class="w-50">
-                    <div class="input-group">
-                        <span class="input-group-text" id="">Name</span>
-                        <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
-                        <input class="btn btn-primary" type="submit" value="Add" />
+                <div class="row py-2">
+                    <div class="col-12 col-lg-6">
+                        <div class="input-group">
+                            <span class="input-group-text" id="">Name</span>
+                            <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
+                            <input class="btn btn-primary" type="submit" value="Add" />
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
+
         <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
         <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
 
@@ -73,7 +76,6 @@
                             </div>
                         </div>
                     </div>
-
                 </li>
             </ul>
         </div>

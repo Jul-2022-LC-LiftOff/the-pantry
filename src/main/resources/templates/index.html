@@ -3,30 +3,30 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-<header>
-    <div th:replace="fragments :: nav"></div>
-    <div th:replace="fragments :: banner"></div>
-</header>
+    <header>
+        <div th:replace="fragments :: nav"></div>
+        <div th:replace="fragments :: banner"></div>
+    </header>
 
-<div class="container body-content py-3">
-    <h1>Cooking from the Pantry</h1>
-    <p>Browse our recipes for just the right meal.</p>
+    <div class="container body-content p-4">
+        <h1>Cooking from the Pantry</h1>
+        <p>Browse our recipes for just the right meal.</p>
 
-    <div class="row row-cols-4 g-4 pt-1">
-        <div class="col" th:each="recipe : ${recipes}">
-            <div class="card border shadow bg-white rounded h-100">
-                <a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="card-img-top"></a>
-                <div class="card-body">
-                    <h5 class="card-title"><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></h5>
-                    <p class="card-text" th:text="${#strings.abbreviate(recipe.description,85)}"></p>
+        <div class="row g-5 pt-1">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-3" th:each="recipe : ${recipes}">
+                <div class="card-animation card border shadow bg-white rounded h-100">
+                    <a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="card-img-top"></a>
+                    <div class="card-body">
+                        <h5 class="card-title"><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></h5>
+                        <p class="card-text" th:text="${#strings.abbreviate(recipe.description,70)}"></p>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-</div>
-
-<footer th:replace="fragments :: footer"></footer>
+    <footer th:replace="fragments :: footer"></footer>
 
 </body>
 </html>
