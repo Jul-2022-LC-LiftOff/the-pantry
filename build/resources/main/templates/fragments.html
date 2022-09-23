@@ -60,13 +60,13 @@
 </nav>
 
 <banner th:fragment="banner" class="p-5 text-center bg-image d-flex justify-content-center align-items-center shadow border-bottom" th:style="'background-image:url(/images/banner-' + ${banner}+ '.jpg); height: 350px;'" >
-    <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+    <div class="mask rounded" style="background-color: rgba(0, 0, 0, 0.6);">
         <div class="d-flex justify-content-center align-items-center h-100 px-5 pt-3 pb-4">
             <div class="text-white">
                 <h1 class="mb-3"><a class="text-white text-reset text-uppercase text-decoration-none" th:href="@{/}">The Pantry</a></h1>
                 <h4 class="mb-3">Find recipe inspiration based on the food in your pantry.</h4>
-                <form method="post" th:action="@{/recipes/results}">
-                    <div class="w-50 mx-auto">
+                <form method="post" th:action="@{/recipes}" class="">
+                    <div class="d-flex flex-column col-xs-12 col-sm-9 col-md-6 col-lg-6 col-xl-6 mx-auto">
                         <div class="input-group">
                             <input class="form-control" name="searchTerm" placeholder="Let's raid the Pantry!" />
                             <input class="btn btn-outline-light" type="submit" value="Search" />
