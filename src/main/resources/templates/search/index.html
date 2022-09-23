@@ -15,49 +15,53 @@
 
 <body>
 
-<header>
-    <div th:replace="fragments :: nav"></div>
-    <div th:replace="fragments :: banner"></div>
-</header>
+    <header>
+        <div th:replace="fragments :: nav"></div>
+        <div th:replace="fragments :: banner"></div>
+    </header>
 
-<div class="container body-content py-3">
-    <h1>Advanced Search</h1>
-    <p>Add multiple ingredients to search recipes.</p>
+    <div class="container body-content p-4">
+        <h1>Advanced Search</h1>
+        <p>Add multiple ingredients to search for recipes.</p>
 
-    <div class="container">
-        <form method="post" action="/list">
-            <div class="w-50 mb-3">
-                <div class="input-group">
-                    <select class="form-control basicAutoSelect" id="ingredient_select" name="ingredient_select"
-                            placeholder="Enter ingredient to search"
-                            data-url="/search/filter/"
-                            data-noresults-text="No ingredients found."
-                            autocomplete="off"></select>
-                    <button class="btn btn-outline-secondary" type="button" onclick="addIngredient()">Add</button>
+        <div class="container">
+            <form method="post" action="/list">
+                <div class="row py-2">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group">
+                            <select class="form-control basicAutoSelect" id="ingredient_select" name="ingredient_select"
+                                placeholder="Add ingredient to search"
+                                data-url="/search/filter/"
+                                data-noresults-text="No ingredients found."
+                                autocomplete="off"></select>
+                            <button class="btn btn-outline-secondary" type="button" onclick="addIngredient()">Add</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="w-50 mb-3">
-                <h5 class="text-muted">Ingredients</h5>
-                <div class="input-group mb-3">
-                    <textarea class="form-control" id="textAreaIngredients" rows="3" readonly></textarea>
+                <div class="row py-2">
+                    <div class="col-12 col-md-6">
+                        <h5 class="text-muted">Ingredients</h5>
+                        <div class="input-group mb-3">
+                            <textarea class="form-control" id="textAreaIngredients" rows="3" readonly></textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="input-group mb-3">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
-            </div>
-            <input type="hidden" id="hiddeningredients" th:field="${searchDTO.ingredients}"/>
-        </form>
+                <input type="hidden" id="hiddeningredients" th:field="${searchDTO.ingredients}"/>
+            </form>
+        </div>
+
+        <script language="JavaScript">
+            $(document).ready(function(){
+                $('.basicAutoSelect').autoComplete();
+            })  // end of document ready
+         </script>
+
     </div>
 
-    <script language="JavaScript">
-        $(document).ready(function(){
-            $('.basicAutoSelect').autoComplete();
-        })  // end of document ready
-     </script>
-
-</div>
-
-<footer th:replace="fragments :: footer"></footer>
+    <footer th:replace="fragments :: footer"></footer>
 
 </body>
 </html>
