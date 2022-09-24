@@ -16,7 +16,7 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("banner", "home");
-        model.addAttribute("recipes", recipeRepository.findAll(PageRequest.of(0, 8)));
+        model.addAttribute("recipes", recipeRepository.findAll(PageRequest.of(0, 12)));
         return "index";
     }
 
