@@ -14,7 +14,7 @@
 
     <div class="row row-cols-4 g-4 pt-1">
         <div class="col" th:each="recipe : ${recipes}">
-            <div class="card border shadow bg-white rounded h-100">
+            <div class="card-animation card border shadow bg-white rounded h-100">
                 <a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="card-img-top"></a>
                 <div class="card-body">
                     <h5 class="card-title"><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></h5>
