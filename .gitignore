@@ -1,12 +1,21 @@
-HELP.md
-.gradle
+#Gradle
+.gradle/
 build/
+**/build/
+!src/**/build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 
 # Ignore Gradle GUI config
 gradle-app.setting
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
 
 # Package Files #
 *.jar
@@ -53,14 +62,13 @@ gradle-app.setting
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
 
-# IntelliJ
-/out/
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -70,5 +78,4 @@ out/
 
 ### VS Code ###
 .vscode/
-
 
