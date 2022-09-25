@@ -40,6 +40,17 @@ public class RecipeController {
         return "recipe";
     }
 
+    // display random recipe
+
+    @GetMapping("recipe/random")
+    public String displayRandomRecipe(Model model) {
+        Recipe recipe = recipeRepository.randomRecipe();
+        model.addAttribute("banner", "recipe");
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipeIngredients", recipeIngredientRepository.findByRecipeId(recipe.getId()));
+        return "recipe";
+    }
+
     // display/search recipes
 
     @GetMapping("recipes")
