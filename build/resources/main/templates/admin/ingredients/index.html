@@ -32,8 +32,12 @@
                 <li class="list-group-item" th:each="ingredient, rowStat : ${ingredients}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                     <span th:text="${ingredient.name}"></span>
 
+                    <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}"></i>
+                    <!-- use this if you want to disable editing, remove above line
                     <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}" th:unless="${activeIngredients.contains(ingredient)}"></i>
                     <i class="bi bi-pencil-square text-secondary d-line" th:if="${activeIngredients.contains(ingredient)}"></i>
+                    -->
+
                     <div class="modal fade" th:id="'editModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'editModalLabel-' + ${rowStat.index}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

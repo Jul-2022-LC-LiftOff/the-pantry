@@ -30,7 +30,7 @@
 
 <nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}"><img src="/images/logo.png" height="42"></a>
+        <a class="navbar-brand" th:href="@{/}"><img src="/images/logo.png" class="img-fluid"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -70,7 +70,7 @@
     <div class="mask rounded my-4 m-md-5" style="background-color: rgba(0, 0, 0, 0.6);">
         <div class="d-flex justify-content-center align-items-center h-100 px-3 px-md-5 pt-3 pb-4">
             <div class="text-white">
-                <h4 class="mb-3">Recipe inspiration based on the food in your pantry.</h4>
+                <h3 class="mb-3 text-center">Recipe inspiration based on ingredients in the pantry.</h3>
                 <form method="post" th:action="@{/recipes}" class="">
                     <div class="d-flex flex-column col-xs-12 col-sm-9 col-md-6 col-lg-6 col-xl-6 mx-auto">
                         <div class="input-group">
@@ -80,9 +80,9 @@
                     </div>
                 </form>
 
-                <div class="pt-2">
-                    <a th:href="@{/search}" class="text-muted text-reset text-decoration-none"><i class="bi bi-search"></i> Advanced Search</a>
-                    <a th:href="@{/recipe/random}" class="text-muted text-reset text-decoration-none"><i class="bi bi-patch-question-fill"></i> Random Recipe</i></a>
+                <div class="d-flex justify-content-center align-items-center pt-2">
+                    <span class="p-2 text-center"><a th:href="@{/search}" class="text-muted text-reset text-decoration-none"><i class="bi bi-search"></i> Advanced Search</a></span>
+                    <span class="p-2 text-center"><a th:href="@{/recipe/random}" class="text-muted text-reset text-decoration-none"><i class="bi bi-patch-question-fill"></i> Random Recipe</i></a></span>
                 </div>
 
             </div>
