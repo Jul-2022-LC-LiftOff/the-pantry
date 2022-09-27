@@ -2,6 +2,7 @@ package org.liftoff.thepantry.controllers;
 
 import org.liftoff.thepantry.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("banner", "home");
-        model.addAttribute("recipes", recipeRepository.findAll());
+        model.addAttribute("recipes", recipeRepository.findAll(PageRequest.of(0, 12)));
         return "index";
     }
 

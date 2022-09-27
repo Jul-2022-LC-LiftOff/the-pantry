@@ -7,20 +7,23 @@
         <div th:replace="fragments :: nav"></div>
     </header>
 
-    <div class="container body-content py-3">
+    <div class="container body-content p-4">
         <h1>Ingredients</h1>
 
-        <div class="container py-3">
+        <div class="container">
             <form method="post" action="add">
-                <div class="w-50">
-                    <div class="input-group">
-                        <span class="input-group-text" id="">Name</span>
-                        <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
-                        <input class="btn btn-primary" type="submit" value="Add" />
+                <div class="row py-2">
+                    <div class="col-12 col-lg-6">
+                        <div class="input-group">
+                            <span class="input-group-text" id="">Name</span>
+                            <input class="form-control" placeholder="enter name" th:field="${ingredient.name}" />
+                            <input class="btn btn-primary" type="submit" value="Add" />
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
+
         <p th:errors="${ingredient.name}" class="alert alert-danger"></p>
         <p th:if="${message}" th:text="${message}" th:class="${class}"></p>
 
@@ -29,8 +32,11 @@
                 <li class="list-group-item" th:each="ingredient, rowStat : ${ingredients}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                     <span th:text="${ingredient.name}"></span>
 
+                    <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}"></i>
+                    <!-- use this if you want to disable editing, remove above line
                     <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}" th:unless="${activeIngredients.contains(ingredient)}"></i>
                     <i class="bi bi-pencil-square text-secondary d-line" th:if="${activeIngredients.contains(ingredient)}"></i>
+                    -->
                     <div class="modal fade" th:id="'editModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'editModalLabel-' + ${rowStat.index}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -73,7 +79,6 @@
                             </div>
                         </div>
                     </div>
-
                 </li>
             </ul>
         </div>
