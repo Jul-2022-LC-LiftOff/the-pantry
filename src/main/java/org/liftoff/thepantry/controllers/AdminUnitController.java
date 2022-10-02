@@ -90,7 +90,7 @@ public class AdminUnitController {
         // delete unit
         unitRepository.delete(unit);
 
-        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("class", "alert alert-danger");
         ra.addFlashAttribute("message", "Ingredient '" + unit.getName() + "' deleted successfully.");
         return "redirect:/admin/units/";
     }

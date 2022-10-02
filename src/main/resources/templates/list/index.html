@@ -3,41 +3,41 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-    <header>
-        <div th:replace="fragments :: nav"></div>
-        <div th:replace="fragments :: banner"></div>
-    </header>
+<header>
+    <div th:replace="fragments :: nav"></div>
+    <div th:replace="fragments :: banner"></div>
+</header>
 
-    <div class="container body-content p-4">
-        <h1>Advanced Search Results</h1>
+<div class="container body-content py-3">
+    <h1>Advanced Search Results</h1>
 
-        <p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
-        <table id="recipetable" class="table table-striped">
-            <thead>
-            <tr>
-                <th class="col-1"></th>
-                <th class="col-3">Name</th>
-                <th class="col-8">Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="recipe:${recipes}">
-                <td><a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="rounded-circle" style="width:50px"></a></td>
-                <td><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></td>
-                <td th:text="${recipe.description}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <p th:unless="${recipes} and ${recipes.size()}">No recipes found!</p>
+    <table id="recipetable" class="table table-striped">
+        <thead>
+        <tr>
+            <th class="col-1"></th>
+            <th class="col-3">Name</th>
+            <th class="col-8">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="recipe:${recipes}">
+            <td><a th:href="@{'/recipe/' + ${recipe.id}}"><img th:src="@{'/images/' + ${recipe.image}}" class="rounded-circle" style="width:50px"></a></td>
+            <td><a th:href="@{'/recipe/' + ${recipe.id}}" th:text="${recipe.name}" class="text-reset text-decoration-none fw-bolder"></a></td>
+            <td th:text="${recipe.description}"></td>
+        </tr>
+        </tbody>
+    </table>
 
-        <script language="JavaScript">
-            $(document).ready(function(){
-                $('#recipetable').DataTable();
-            })  // end of document ready
-        </script>
+    <script language="JavaScript">
+        $(document).ready(function(){
+            $('#recipetable').DataTable();
+        })  // end of document ready
+    </script>
 
-    </div>
+</div>
 
-    <footer th:replace="fragments :: footer"></footer>
+<footer th:replace="fragments :: footer"></footer>
 
 </body>
 </html>

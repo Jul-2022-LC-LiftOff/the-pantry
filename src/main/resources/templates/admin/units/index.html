@@ -7,18 +7,16 @@
         <div th:replace="fragments :: nav"></div>
     </header>
 
-    <div class="container body-content p-4">
+    <div class="container body-content py-3">
         <h1>Units</h1>
 
-        <div class="container">
+        <div class="container py-3">
             <form method="post" action="add">
-                <div class="row py-2">
-                    <div class="col-12 col-lg-6">
-                        <div class="input-group">
-                            <span class="input-group-text" id="">Name</span>
-                            <input class="form-control" placeholder="enter name" th:field="${unit.name}" />
-                            <input class="btn btn-primary" type="submit" value="Add" />
-                        </div>
+                <div class="w-50">
+                    <div class="input-group">
+                        <span class="input-group-text" id="">Name</span>
+                        <input class="form-control" placeholder="enter name" th:field="${unit.name}" />
+                        <input class="btn btn-primary" type="submit" value="Add" />
                     </div>
                 </div>
             </form>
@@ -32,12 +30,8 @@
                 <li class="list-group-item" th:each="unit, rowStat : ${units}" th:style="${rowStat.odd} ? 'background: #f0f0f2;' : 'background: #ffffff;'">
                     <span th:text="${unit.name}"></span>
 
-                    <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}"></i>
-                    <!-- use this if you want to disable editing, remove above line
                     <i class="bi bi-pencil-square text-primary d-line" role="button" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${rowStat.index}" th:unless="${activeUnits.contains(unit)}"></i>
                     <i class="bi bi-pencil-square text-secondary d-line" th:if="${activeUnits.contains(unit)}"></i>
-                    -->
-
                     <div class="modal fade" th:id="'editModal-' + ${rowStat.index}" tabindex="-1" th:aria-labelledby="'editModalLabel-' + ${rowStat.index}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

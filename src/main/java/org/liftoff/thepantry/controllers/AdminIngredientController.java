@@ -90,7 +90,7 @@ public class AdminIngredientController {
         // delete ingredient
         ingredientRepository.delete(ingredient);
 
-        ra.addFlashAttribute("class", "alert alert-success");
+        ra.addFlashAttribute("class", "alert alert-danger");
         ra.addFlashAttribute("message", "Ingredient '" + ingredient.getName() + "' deleted successfully.");
         return "redirect:/admin/ingredients/";
     }

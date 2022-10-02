@@ -3,49 +3,46 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-    <header>
-        <div th:replace="fragments :: nav"></div>
-        <div th:replace="fragments :: banner"></div>
-    </header>
+<header>
+    <div th:replace="fragments :: nav"></div>
+    <div th:replace="fragments :: banner"></div>
+</header>
 
-    <div class="container body-content p-4">
-        <h1>Features and Functionality</h1>
-        <h5>End User</h5>
-        <ul>
-            <li>Browse recipes (list recipe cards w/ link to recipe)</li>
+<div class="container body-content py-3">
+    <h1>Features and Functionality</h1>
+    <h5>End User</h5>
+    <ul>
+        <li>Browse recipes (list recipe cards w/ link to recipe)</li>
+        <li>Simple Search recipes (return recipe cards matching search term)</li>
+        <li>Advanced Search (return table of recipes matching ingredient search terms)</li>
+        <li>Random Recipe ?!?! (chooses a random recipe from the list)</li>
+        <li>View full recipe (display recipe)</li>
+    </ul>
+    <h5>Administration</h5>
+    <ul>
+        <li>Add Units (add, edit, delete)</li>
+        <li>Add Ingredients (add, edit, delete)</li>
+        <li>Add Recipe (add, edit, delete)
             <ul>
-                <li>Pagination of recipes</li>
-            </ul>
-            <li>View full recipe (display recipe)</li>
-            <li>Simple search (return recipe cards matching search term)</li>
-            <li>Advanced search (return table of recipes matching ingredient search terms)</li>
-            <li>Random recipe (return a random recipe)</li>
-        </ul>
-        <h5>Administration</h5>
-        <ul>
-            <li>Add Units (add, edit, delete)</li>
-            <li>Add Ingredients (add, edit, delete)</li>
-            <li>Add Recipe (add, edit, delete)
+                <li>Name</li>
+                <li>Description</li>
+                <li>Instructions</li>
+                <li>Image (upload and delete)</li>
+                <li>Recipe ingredients (add, edit, delete)</li>
                 <ul>
-                    <li>Name</li>
-                    <li>Description</li>
-                    <li>Instructions</li>
-                    <li>Image (upload and delete)</li>
-                    <li>Recipe ingredients (add, edit, delete)</li>
-                        <ul>
-                            <li>Amount</li>
-                            <li>Unit</li>
-                            <li>Ingredient</li>
-                        </ul>
-                    <li>Add new ingredient (for availability)</li>
+                    <li>Amount</li>
+                    <li>Unit</li>
+                    <li>Ingredient</li>
                 </ul>
-            </li>
-        </ul>
+                <li>Add new ingredient (for availability)</li>
+            </ul>
+        </li>
+    </ul>
 
-        <p>Extensive error checking for admin included for adding, editing and deleting. Including modal popup warnings and error/success messages.</p>
-    </div>
+    <p>Extensive error checking for admin included for adding, editing and deleting. Including modal popup warnings and error/success messages.</p>
+</div>
 
-    <footer th:replace="fragments :: footer"></footer>
+<footer th:replace="fragments :: footer"></footer>
 
 </body>
 </html>

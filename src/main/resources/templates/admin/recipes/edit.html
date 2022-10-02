@@ -7,11 +7,11 @@
         <div th:replace="fragments :: nav"></div>
     </header>
 
-    <div class="container body-content p-4">
+    <div class="container body-content py-3">
 
         <h1>Edit Recipe</h1>
 
-        <div class="container">
+        <div class="container py-3">
             <form method="post" id="edit">
                 <input type="hidden" name="recipeId" th:value="${recipe.id}" />
                 <input type="hidden" class="form-control" th:field="${recipe.image}" />
@@ -46,13 +46,13 @@
         <div class="container py-3">
             <h3>Ingredients</h3>
                 <div class="row">
-                    <div class="col-xs-12 col-md-auto">
+                    <div class="col">
                         <div class="input-group">
                             <span class="input-group-text">Amount</span>
                             <input class="form-control" size="8" name="amount" />
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-auto">
+                    <div class="col">
                         <div class="input-group">
                             <label class="input-group-text" for="unitSelect">Unit</label>
                             <select class="form-select" id="unitSelect" name="unitId">
@@ -61,7 +61,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-auto">
+                    <div class="col-md-auto">
                         <div class="input-group">
                             <label class="input-group-text" for="ingredientSelect">Ingredient</i></label>
                             <select class="form-select" id="ingredientSelect" name="ingredientId">
